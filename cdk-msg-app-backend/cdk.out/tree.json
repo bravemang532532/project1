@@ -2419,14 +2419,10 @@
                               "provider": "GitHub"
                             },
                             "configuration": {
-                              "Owner": {
-                                "Ref": "githubUserName"
-                              },
-                              "Repo": {
-                                "Ref": "githubRespository"
-                              },
+                              "Owner": "bravemang532532",
+                              "Repo": "project1",
                               "Branch": "main",
-                              "OAuthToken": "{{resolve:secretsmanager:gitToken:SecretString:::}}",
+                              "OAuthToken": "{{resolve:secretsmanager:/my/github/token:SecretString:::}}",
                               "PollForSourceChanges": false
                             },
                             "runOrder": 1
@@ -2545,7 +2541,7 @@
                           "aws:cdk:cloudformation:props": {
                             "authentication": "GITHUB_HMAC",
                             "authenticationConfiguration": {
-                              "secretToken": "{{resolve:secretsmanager:gitToken:SecretString:::}}"
+                              "secretToken": "{{resolve:secretsmanager:/my/github/token:SecretString:::}}"
                             },
                             "filters": [
                               {

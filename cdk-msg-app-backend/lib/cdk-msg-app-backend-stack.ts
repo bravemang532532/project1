@@ -147,6 +147,8 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
       ]
     });
 
+
+
     const fargateTaskDefinition = new ecs.FargateTaskDefinition(this, 'ApiTaskDefinition', {
       memoryLimitMiB: 512,
       cpu: 256,
@@ -157,6 +159,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
       resources: [table.tableArn],
       actions: ['dynamodb:*']
     }));
+
 
     const container = fargateTaskDefinition.addContainer("backend", {
       // Use an image from Amazon ECR
@@ -213,30 +216,14 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
 
 
     const code = codebuild.Source.gitHub({
-      owner: githubUserName.valueAsString,
-      repo: githubRepository.valueAsString,
+      owner: 'bravemang532532',
+      repo: 'project1',
       webhook: true, // optional, default: true if `webhookfilteres` were provided, false otherwise
       webhookFilters: [
         codebuild.FilterGroup.inEventOf(codebuild.EventAction.PUSH).andBranchIs('main'),
       ], // optional, by default all pushes and pull requests will trigger a build
     });
 
-
-
-
-
-    const sourceOutput = new codepipeline.Artifact();
-    const buildOutput = new codepipeline.Artifact();
-    const nameOfGithubPersonTokenParameterAsString = githubPersonalTokenSecretName.valueAsString
-
-    const sourceAction = new codepipeline_actions.GitHubSourceAction({
-      actionName: 'github_source',
-      owner: githubUserName.valueAsString,
-      repo: githubRepository.valueAsString,
-      branch: 'main',
-      oauthToken: cdk.SecretValue.secretsManager(nameOfGithubPersonTokenParameterAsString),
-      output: sourceOutput
-    });
 
 
     const project = new codebuild.PipelineProject(this, 'MyProject', {
@@ -265,6 +252,22 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
       ]
     });
     project.addToRolePolicy(buildRolePolicy);
+
+
+    const sourceOutput = new codepipeline.Artifact();
+    const buildOutput = new codepipeline.Artifact();
+    const nameOfGithubPersonTokenParameterAsString = githubPersonalTokenSecretName.valueAsString
+
+    const sourceAction = new codepipeline_actions.GitHubSourceAction({
+      actionName: 'github_source',
+      owner: 'bravemang532532',
+      repo: 'project1',
+      branch: 'main',
+      oauthToken: cdk.SecretValue.secretsManager("/my/github/token"),
+      output: sourceOutput
+    });
+
+
 
     const buildAction = new codepipeline_actions.CodeBuildAction({
       actionName: 'CodeBuild',

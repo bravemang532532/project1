@@ -1704,14 +1704,10 @@
          "Version": "1"
         },
         "Configuration": {
-         "Owner": {
-          "Ref": "githubUserName"
-         },
-         "Repo": {
-          "Ref": "githubRespository"
-         },
+         "Owner": "bravemang532532",
+         "Repo": "project1",
          "Branch": "main",
-         "OAuthToken": "{{resolve:secretsmanager:gitToken:SecretString:::}}",
+         "OAuthToken": "{{resolve:secretsmanager:/my/github/token:SecretString:::}}",
          "PollForSourceChanges": false
         },
         "Name": "github_source",
@@ -1828,7 +1824,7 @@
    "Properties": {
     "Authentication": "GITHUB_HMAC",
     "AuthenticationConfiguration": {
-     "SecretToken": "{{resolve:secretsmanager:gitToken:SecretString:::}}"
+     "SecretToken": "{{resolve:secretsmanager:/my/github/token:SecretString:::}}"
     },
     "Filters": [
      {
