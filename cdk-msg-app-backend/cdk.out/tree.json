@@ -2546,7 +2546,7 @@
                             "configuration": {
                               "Owner": "bravemang532532",
                               "Repo": "project1",
-                              "Branch": "main",
+                              "Branch": "master",
                               "OAuthToken": "{{resolve:secretsmanager:/my/github/token:SecretString:::}}",
                               "PollForSourceChanges": false
                             },
