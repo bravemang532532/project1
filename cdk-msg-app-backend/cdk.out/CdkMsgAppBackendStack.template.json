@@ -6,12 +6,12 @@
   },
   "githubRespository": {
    "Type": "String",
-   "Default": "amazon-ecs-fargate-cdk-v2-cicd",
+   "Default": "project1",
    "Description": "Github source code repository"
   },
   "githubPersonalTokenSecretName": {
    "Type": "String",
-   "Default": "/bravemang532532/amazon-ecs-fargate-cdk-v2-cicd/github/personal_access_token",
+   "Default": "/bravemang532532/project1/github/personal_access_token",
    "Description": "The name of the AWS Secrets Manager Secret which holds the GitHub Personal Access Token for this project."
   },
   "BootstrapVersion": {
@@ -487,6 +487,27 @@
     "aws:cdk:path": "CdkMsgAppBackendStack/MyCluster/Resource"
    }
   },
+  "ecstaskroleCdkMsgAppBackendStack7D019F7F": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "RoleName": "ecs-taskrole-CdkMsgAppBackendStack"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/ecs-taskrole-CdkMsgAppBackendStack/Resource"
+   }
+  },
   "DeployDockerImageCustomResource1798FC60": {
    "Type": "Custom::CDKBucketDeployment",
    "Properties": {
@@ -502,7 +523,7 @@
       [
        "docker://",
        {
-        "Fn::Sub": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-${AWS::AccountId}-${AWS::Region}:722b49da1b23b46ad99a196362724afa2c86042c37e7e77bf5769ff3bc7682d3"
+        "Fn::Sub": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-${AWS::AccountId}-${AWS::Region}:43266d527a634f0dcb73780789bf72b2aa84d23d68bb0ce9dcda1ed5b36d4e8e"
        }
       ]
      ]
@@ -1201,7 +1222,7 @@
     "aws:cdk:path": "CdkMsgAppBackendStack/ALB/Listener/TargetGroup/Resource"
    }
   },
-  "MyProjectRole9BBE5233": {
+  "myProjectRoleA1839488": {
    "Type": "AWS::IAM::Role",
    "Properties": {
     "AssumeRolePolicyDocument": {
@@ -1218,10 +1239,10 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "CdkMsgAppBackendStack/MyProject/Role/Resource"
+    "aws:cdk:path": "CdkMsgAppBackendStack/myProject/Role/Resource"
    }
   },
-  "MyProjectRoleDefaultPolicyB19B7C29": {
+  "myProjectRoleDefaultPolicy54F9CD34": {
    "Type": "AWS::IAM::Policy",
    "Properties": {
     "PolicyDocument": {
@@ -1252,7 +1273,7 @@
            },
            ":log-group:/aws/codebuild/",
            {
-            "Ref": "MyProject39F7B0AE"
+            "Ref": "myProjectCDE64E27"
            },
            ":*"
           ]
@@ -1276,7 +1297,7 @@
            },
            ":log-group:/aws/codebuild/",
            {
-            "Ref": "MyProject39F7B0AE"
+            "Ref": "myProjectCDE64E27"
            }
           ]
          ]
@@ -1310,7 +1331,7 @@
           },
           ":report-group/",
           {
-           "Ref": "MyProject39F7B0AE"
+           "Ref": "myProjectCDE64E27"
           },
           "-*"
          ]
@@ -1391,39 +1412,104 @@
      ],
      "Version": "2012-10-17"
     },
-    "PolicyName": "MyProjectRoleDefaultPolicyB19B7C29",
+    "PolicyName": "myProjectRoleDefaultPolicy54F9CD34",
     "Roles": [
      {
-      "Ref": "MyProjectRole9BBE5233"
+      "Ref": "myProjectRoleA1839488"
      }
     ]
    },
    "Metadata": {
-    "aws:cdk:path": "CdkMsgAppBackendStack/MyProject/Role/DefaultPolicy/Resource"
+    "aws:cdk:path": "CdkMsgAppBackendStack/myProject/Role/DefaultPolicy/Resource"
    }
   },
-  "MyProject39F7B0AE": {
+  "myProjectCDE64E27": {
    "Type": "AWS::CodeBuild::Project",
    "Properties": {
     "Artifacts": {
-     "Type": "CODEPIPELINE"
+     "Type": "NO_ARTIFACTS"
     },
     "Environment": {
      "ComputeType": "BUILD_GENERAL1_SMALL",
-     "Image": "aws/codebuild/standard:2.0",
+     "EnvironmentVariables": [
+      {
+       "Name": "cluster_name",
+       "Type": "PLAINTEXT",
+       "Value": {
+        "Ref": "MyCluster4C1BA579"
+       }
+      },
+      {
+       "Name": "ecr_repo_uri",
+       "Type": "PLAINTEXT",
+       "Value": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::Select": [
+            4,
+            {
+             "Fn::Split": [
+              ":",
+              {
+               "Fn::GetAtt": [
+                "workshopapi2ADF1ECF",
+                "Arn"
+               ]
+              }
+             ]
+            }
+           ]
+          },
+          ".dkr.ecr.",
+          {
+           "Fn::Select": [
+            3,
+            {
+             "Fn::Split": [
+              ":",
+              {
+               "Fn::GetAtt": [
+                "workshopapi2ADF1ECF",
+                "Arn"
+               ]
+              }
+             ]
+            }
+           ]
+          },
+          ".",
+          {
+           "Ref": "AWS::URLSuffix"
+          },
+          "/",
+          {
+           "Ref": "workshopapi2ADF1ECF"
+          }
+         ]
+        ]
+       }
+      }
+     ],
+     "Image": "aws/codebuild/amazonlinux2-x86_64-standard:2.0",
      "ImagePullCredentialsType": "CODEBUILD",
      "PrivilegedMode": true,
      "Type": "LINUX_CONTAINER"
     },
     "ServiceRole": {
      "Fn::GetAtt": [
-      "MyProjectRole9BBE5233",
+      "myProjectRoleA1839488",
       "Arn"
      ]
     },
     "Source": {
-     "Type": "CODEPIPELINE"
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"pre_build\": {\n      \"commands\": [\n        \"env\",\n        \"export tag=latest\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"cd flask-docker-app\",\n        \"docker build -t $ecr_repo_uri:$tag .\",\n        \"$(aws ecr get-login --no-include-email)\",\n        \"docker push $ecr_repo_uri:$tag\"\n      ]\n    },\n    \"post_build\": {\n      \"commands\": [\n        \"echo \\\"in post-build stage\\\"\",\n        \"cd ..\",\n        \"printf '[{\\\"name\\\":\\\"flask-app\\\",\\\"imageUri\\\":\\\"%s\\\"}]' $ecr_repo_uri:$tag > imagedefinitions.json\",\n        \"pwd; ls -al; cat imagedefinitions.json\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"imagedefinitions.json\"\n    ]\n  }\n}",
+     "Location": "https://github.com/bravemang532532/project1.git",
+     "ReportBuildStatus": true,
+     "Type": "GITHUB"
     },
+    "BadgeEnabled": true,
     "Cache": {
      "Type": "NO_CACHE"
     },
@@ -1432,10 +1518,26 @@
       "ecspipelineArtifactsBucketEncryptionKeyAAB73B69",
       "Arn"
      ]
+    },
+    "Name": "CdkMsgAppBackendStack",
+    "Triggers": {
+     "FilterGroups": [
+      [
+       {
+        "Pattern": "PUSH",
+        "Type": "EVENT"
+       },
+       {
+        "Pattern": "refs/heads/main",
+        "Type": "HEAD_REF"
+       }
+      ]
+     ],
+     "Webhook": true
     }
    },
    "Metadata": {
-    "aws:cdk:path": "CdkMsgAppBackendStack/MyProject/Resource"
+    "aws:cdk:path": "CdkMsgAppBackendStack/myProject/Resource"
    }
   },
   "ecspipelineArtifactsBucketEncryptionKeyAAB73B69": {
@@ -1732,7 +1834,7 @@
         },
         "Configuration": {
          "ProjectName": {
-          "Ref": "MyProject39F7B0AE"
+          "Ref": "myProjectCDE64E27"
          }
         },
         "InputArtifacts": [
@@ -1892,7 +1994,7 @@
        "Effect": "Allow",
        "Resource": {
         "Fn::GetAtt": [
-         "MyProject39F7B0AE",
+         "myProjectCDE64E27",
          "Arn"
         ]
        }
@@ -2036,7 +2138,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31U227bMAz9lr0r3tpiBfaYpBcEKzYjLrrHgpZZV7EsGbqkCAz/+yjJjp0O2BOPyCORPCR0nX2/zb59gQ+74lWzkqLM+sIBb9j2TeVgoEWHhlH8ta9OClpdEeMZSomBEcHAkF9n/UvHg+sl37Lcl1LwwpcKXfDNaK+9w/P15J99a2s1F+CEVmdyAPe7PJhf4B7B4QecWG7EkeD88E5RnYQnQqpkPK0dtfTeonKsQO6NcKdHo30Xa/ivY6dqg9b+47+P7tC5yfo9dtoKp01MuzjNcAM26mSzfiu9DZoSdYIPYGoIGtjmDt+EEpMCnz1aORAKzcI33i3QHAVPqo6w4CCDquGRrfbKxXJfwVp0NrvTvEGza6EOspOIEtqyAhq/ULVEp9WDVzylmAA9PuGBCWipdZ0mGW2uaepRg4QGZm+mdCmHvcn6jafELgjCEgwXRpTM/M7yPDCpa9LvSdfnWU14YNB1RIqrA95pS71TH9TNWQRTj8t46Unm2dDO04Ui3ZsruHCQgBKsE1xqqEp6RnGKHWn513P6J4ptYiwN+eK85AmavRo5E17EU2HnVhfHgXFdYemFrLI+Fx1ShZgbfUAeOxxhonVjfGZGygL/wfJd62ZgTUvy/sTYdzBrKSCufgTDQPtstTdpy35713nH4lzpx6hJCLalddbtkrXEtL2VSLujqLDsYL8er26zqx/0AR2sECtDOypazPbJ/gUqGGqQnAQAAA=="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31U227bMAz9lr0r3tpiBfaYpBcEKzYjLrrHgpZZV7EsGbqkCAz/+yjJjp0O2BOPePPhIeHr7Ptt9u0LfNgVr5qVFGXWFw54w7ZvKgcDLTo0jOKvfXVS0OqKMp6hlBgyIhgY8uusf+l4cL3kW5b7Ugpe+FKhC74Z7bV3eC5P/tm3tlZzAU5odU4O4H6XB/ML3CM4/IATy404Epwb7xTxJDwlJCbja+1opPcWlWMFcm+EOz0a7bvI4b+OnaoNWvuP/z66w+Qm6/fYaSucNvGzi9cMN2CjTjbrt9LboCmlTvABTA1BA9vc4ZtQYlLgs0crB0KhWfjG2gLNUfCk6ggLDjKoGppstVduYAJaoquT+tHmmjYVeScUR3oFa9HZ7E7zBs2uhTqshoSW0JYV0IkIVUt0Wj14xRONCVCnCQ/M3kytUr29yfqNp6YuCMISDCUjSmbmtHwPTOqa9HvS9XlXEx4YdB0lxdMB77Sl2YkjMT2LYOrxGC89yTwbunkqKFLdzODCQeJIsE5wqaEqqY3iFDvS8a/nzz9RbBNjackX72WeoN2rMWfCi3gidh518RwY1xWWXsgq63OjD8jjZCNM4U50SMyRMkYUUxb4D5bvWjcDa1qS9SfGeYNZSwHx5CMYBrpjq71J1/Xbu847FvdJf4qaBGBbOmPdLrOWmK62EukeFBHLDvbr8eo2u/pBP56DFWJl6DZFi9k+2b/bsf+alAQAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "CdkMsgAppBackendStack/CDKMetadata/Default"

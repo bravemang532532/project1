@@ -17,7 +17,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/fecc64feaa6c35f8327a75a959fe3a8095d85e87be2559ca648b85b8096d4cc0.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/85f3063eb81073a0791017ee9a3e27bc33d035161a57ceac2ba7eae3ce7640d7.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -201,6 +201,12 @@
             "data": "MyCluster4C1BA579"
           }
         ],
+        "/CdkMsgAppBackendStack/ecs-taskrole-CdkMsgAppBackendStack/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ecstaskroleCdkMsgAppBackendStack7D019F7F"
+          }
+        ],
         "/CdkMsgAppBackendStack/DeployDockerImage/CustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
@@ -321,22 +327,22 @@
             "data": "ALBListenerTargetGroupD5D64FBA"
           }
         ],
-        "/CdkMsgAppBackendStack/MyProject/Role/Resource": [
+        "/CdkMsgAppBackendStack/myProject/Role/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MyProjectRole9BBE5233"
+            "data": "myProjectRoleA1839488"
           }
         ],
-        "/CdkMsgAppBackendStack/MyProject/Role/DefaultPolicy/Resource": [
+        "/CdkMsgAppBackendStack/myProject/Role/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MyProjectRoleDefaultPolicyB19B7C29"
+            "data": "myProjectRoleDefaultPolicy54F9CD34"
           }
         ],
-        "/CdkMsgAppBackendStack/MyProject/Resource": [
+        "/CdkMsgAppBackendStack/myProject/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MyProject39F7B0AE"
+            "data": "myProjectCDE64E27"
           }
         ],
         "/CdkMsgAppBackendStack/ecs-pipeline/ArtifactsBucketEncryptionKey/Resource": [

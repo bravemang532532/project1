@@ -57,20 +57,16 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
       description: "Github username for source code repository"
     })
 
-
-
     const githubRepository = new cdk.CfnParameter(this, "githubRespository", {
       type: "String",
       description: "Github source code repository",
-      default: "amazon-ecs-fargate-cdk-v2-cicd"
+      default: "project1"
     })
-
-
 
     const githubPersonalTokenSecretName = new cdk.CfnParameter(this, "githubPersonalTokenSecretName", {
       type: "String",
       description: "The name of the AWS Secrets Manager Secret which holds the GitHub Personal Access Token for this project.",
-      default: "/bravemang532532/amazon-ecs-fargate-cdk-v2-cicd/github/personal_access_token"
+      default: "/bravemang532532/project1/github/personal_access_token"
     })
 
 
@@ -117,6 +113,16 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
 
     const cluster = new ecs.Cluster(this, "MyCluster", {
       vpc: vpc
+    });
+
+
+    const logging = new ecs.AwsLogDriver({
+      streamPrefix: "ecs-logs"
+    });
+
+    const taskrole = new iam.Role(this, `ecs-taskrole-${this.stackName}`, {
+      roleName: `ecs-taskrole-${this.stackName}`,
+      assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com')
     });
 
 
@@ -215,7 +221,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
     listener.connections.allowDefaultPortFromAnyIpv4('Open to the world');
 
 
-    const code = codebuild.Source.gitHub({
+    const gitHubSource = codebuild.Source.gitHub({
       owner: 'bravemang532532',
       repo: 'project1',
       webhook: true, // optional, default: true if `webhookfilteres` were provided, false otherwise
@@ -226,12 +232,71 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
 
 
 
-    const project = new codebuild.PipelineProject(this, 'MyProject', {
+    // const project = new codebuild.PipelineProject(this, 'MyProject', {
+    //   projectName: `${this.stackName}`,
+    //   source: gitHubSource,
+    //   environment: {
+    //     buildImage: codebuild.LinuxBuildImage.STANDARD_2_0,
+    //     privileged: true
+    //   },
+    // });
+    const project = new codebuild.Project(this, 'myProject', {
+      projectName: `${this.stackName}`,
+      source: gitHubSource,
       environment: {
-        buildImage: codebuild.LinuxBuildImage.STANDARD_2_0,
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_2,
         privileged: true
       },
+      environmentVariables: {
+        'cluster_name': {
+          value: `${cluster.clusterName}`
+        },
+        'ecr_repo_uri': {
+          value: `${repository.repositoryUri}`
+        }
+      },
+      badge: true,
+      // TODO - I had to hardcode tag here
+      buildSpec: codebuild.BuildSpec.fromObject({
+        version: "0.2",
+        phases: {
+          pre_build: {
+            /*
+            commands: [
+              'env',
+              'export tag=${CODEBUILD_RESOLVED_SOURCE_VERSION}'
+            ]
+            */
+            commands: [
+              'env',
+              'export tag=latest'
+            ]
+          },
+          build: {
+            commands: [
+              'cd flask-docker-app',
+              `docker build -t $ecr_repo_uri:$tag .`,
+              '$(aws ecr get-login --no-include-email)',
+              'docker push $ecr_repo_uri:$tag'
+            ]
+          },
+          post_build: {
+            commands: [
+              'echo "in post-build stage"',
+              'cd ..',
+              "printf '[{\"name\":\"flask-app\",\"imageUri\":\"%s\"}]' $ecr_repo_uri:$tag > imagedefinitions.json",
+              "pwd; ls -al; cat imagedefinitions.json"
+            ]
+          }
+        },
+        artifacts: {
+          files: [
+            'imagedefinitions.json'
+          ]
+        }
+      })
     });
+
 
     const buildRolePolicy = new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
@@ -345,7 +410,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
     // }));
 
     // new cdk.CfnOutput(this, "image", { value: repository.repositoryUri + ":latest" })
-    // new cdk.CfnOutput(this, 'loadbalancerdns', { value: service.loadBalancer.loadBalancerDnsName });
+    // new cdk.CfnOutput(this, 'loadbalancerdns', { value: lb.loadBalancerArn.loadBalancerDnsName });
   }
 }
 
