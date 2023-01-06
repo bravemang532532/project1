@@ -327,7 +327,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
       actionName: 'github_source',
       owner: 'bravemang532532',
       repo: 'project1',
-      branch: 'main',
+      branch: 'master',
       oauthToken: cdk.SecretValue.secretsManager("/my/github/token"),
       output: sourceOutput
     });
