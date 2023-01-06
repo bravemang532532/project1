@@ -1936,7 +1936,7 @@
                                   "Resource": [
                                     {
                                       "Fn::GetAtt": [
-                                        "ascshopifypipelineArtifactsBucketA21E6ABC",
+                                        "ecspipelineArtifactsBucket024C5E23",
                                         "Arn"
                                       ]
                                     },
@@ -1946,7 +1946,7 @@
                                         [
                                           {
                                             "Fn::GetAtt": [
-                                              "ascshopifypipelineArtifactsBucketA21E6ABC",
+                                              "ecspipelineArtifactsBucket024C5E23",
                                               "Arn"
                                             ]
                                           },
@@ -1967,41 +1967,7 @@
                                   "Effect": "Allow",
                                   "Resource": {
                                     "Fn::GetAtt": [
-                                      "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF",
-                                      "Arn"
-                                    ]
-                                  }
-                                },
-                                {
-                                  "Action": [
-                                    "ecr:BatchCheckLayerAvailability",
-                                    "ecr:BatchGetImage",
-                                    "ecr:CompleteLayerUpload",
-                                    "ecr:GetDownloadUrlForLayer",
-                                    "ecr:InitiateLayerUpload",
-                                    "ecr:PutImage",
-                                    "ecr:UploadLayerPart"
-                                  ],
-                                  "Effect": "Allow",
-                                  "Resource": {
-                                    "Fn::GetAtt": [
-                                      "workshopapi2ADF1ECF",
-                                      "Arn"
-                                    ]
-                                  }
-                                },
-                                {
-                                  "Action": [
-                                    "ecr:batchchecklayeravailability",
-                                    "ecr:batchgetimage",
-                                    "ecr:getauthorizationtoken",
-                                    "ecr:getdownloadurlforlayer",
-                                    "ecs:describecluster"
-                                  ],
-                                  "Effect": "Allow",
-                                  "Resource": {
-                                    "Fn::GetAtt": [
-                                      "MyCluster4C1BA579",
+                                      "ecspipelineArtifactsBucketEncryptionKeyAAB73B69",
                                       "Arn"
                                     ]
                                   }
@@ -2064,7 +2030,7 @@
                     },
                     "encryptionKey": {
                       "Fn::GetAtt": [
-                        "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF",
+                        "ecspipelineArtifactsBucketEncryptionKeyAAB73B69",
                         "Arn"
                       ]
                     }
@@ -2081,17 +2047,17 @@
               "version": "2.56.0"
             }
           },
-          "asc-shopify-pipeline": {
-            "id": "asc-shopify-pipeline",
-            "path": "CdkMsgAppBackendStack/asc-shopify-pipeline",
+          "ecs-pipeline": {
+            "id": "ecs-pipeline",
+            "path": "CdkMsgAppBackendStack/ecs-pipeline",
             "children": {
               "ArtifactsBucketEncryptionKey": {
                 "id": "ArtifactsBucketEncryptionKey",
-                "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucketEncryptionKey",
+                "path": "CdkMsgAppBackendStack/ecs-pipeline/ArtifactsBucketEncryptionKey",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucketEncryptionKey/Resource",
+                    "path": "CdkMsgAppBackendStack/ecs-pipeline/ArtifactsBucketEncryptionKey/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::KMS::Key",
                       "aws:cdk:cloudformation:props": {
@@ -2138,18 +2104,18 @@
               },
               "ArtifactsBucketEncryptionKeyAlias": {
                 "id": "ArtifactsBucketEncryptionKeyAlias",
-                "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucketEncryptionKeyAlias",
+                "path": "CdkMsgAppBackendStack/ecs-pipeline/ArtifactsBucketEncryptionKeyAlias",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucketEncryptionKeyAlias/Resource",
+                    "path": "CdkMsgAppBackendStack/ecs-pipeline/ArtifactsBucketEncryptionKeyAlias/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::KMS::Alias",
                       "aws:cdk:cloudformation:props": {
-                        "aliasName": "alias/codepipeline-cdkmsgappbackendstack-asc-shopify-pipeline-f3cf1d58",
+                        "aliasName": "alias/codepipeline-cdkmsgappbackendstack-ecs-pipeline-e5a86a12",
                         "targetKeyId": {
                           "Fn::GetAtt": [
-                            "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF",
+                            "ecspipelineArtifactsBucketEncryptionKeyAAB73B69",
                             "Arn"
                           ]
                         }
@@ -2168,11 +2134,11 @@
               },
               "ArtifactsBucket": {
                 "id": "ArtifactsBucket",
-                "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucket",
+                "path": "CdkMsgAppBackendStack/ecs-pipeline/ArtifactsBucket",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucket/Resource",
+                    "path": "CdkMsgAppBackendStack/ecs-pipeline/ArtifactsBucket/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
                       "aws:cdk:cloudformation:props": {
@@ -2183,7 +2149,7 @@
                                 "sseAlgorithm": "aws:kms",
                                 "kmsMasterKeyId": {
                                   "Fn::GetAtt": [
-                                    "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF",
+                                    "ecspipelineArtifactsBucketEncryptionKeyAAB73B69",
                                     "Arn"
                                   ]
                                 }
@@ -2206,16 +2172,16 @@
                   },
                   "Policy": {
                     "id": "Policy",
-                    "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucket/Policy",
+                    "path": "CdkMsgAppBackendStack/ecs-pipeline/ArtifactsBucket/Policy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucket/Policy/Resource",
+                        "path": "CdkMsgAppBackendStack/ecs-pipeline/ArtifactsBucket/Policy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
                           "aws:cdk:cloudformation:props": {
                             "bucket": {
-                              "Ref": "ascshopifypipelineArtifactsBucketA21E6ABC"
+                              "Ref": "ecspipelineArtifactsBucket024C5E23"
                             },
                             "policyDocument": {
                               "Statement": [
@@ -2233,7 +2199,7 @@
                                   "Resource": [
                                     {
                                       "Fn::GetAtt": [
-                                        "ascshopifypipelineArtifactsBucketA21E6ABC",
+                                        "ecspipelineArtifactsBucket024C5E23",
                                         "Arn"
                                       ]
                                     },
@@ -2243,7 +2209,7 @@
                                         [
                                           {
                                             "Fn::GetAtt": [
-                                              "ascshopifypipelineArtifactsBucketA21E6ABC",
+                                              "ecspipelineArtifactsBucket024C5E23",
                                               "Arn"
                                             ]
                                           },
@@ -2277,11 +2243,11 @@
               },
               "Role": {
                 "id": "Role",
-                "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Role",
+                "path": "CdkMsgAppBackendStack/ecs-pipeline/Role",
                 "children": {
                   "ImportRole": {
                     "id": "ImportRole",
-                    "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Role/ImportRole",
+                    "path": "CdkMsgAppBackendStack/ecs-pipeline/Role/ImportRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
                       "version": "2.56.0"
@@ -2289,7 +2255,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Role/Resource",
+                    "path": "CdkMsgAppBackendStack/ecs-pipeline/Role/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -2314,11 +2280,11 @@
                   },
                   "DefaultPolicy": {
                     "id": "DefaultPolicy",
-                    "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Role/DefaultPolicy",
+                    "path": "CdkMsgAppBackendStack/ecs-pipeline/Role/DefaultPolicy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Role/DefaultPolicy/Resource",
+                        "path": "CdkMsgAppBackendStack/ecs-pipeline/Role/DefaultPolicy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                           "aws:cdk:cloudformation:props": {
@@ -2341,7 +2307,7 @@
                                   "Resource": [
                                     {
                                       "Fn::GetAtt": [
-                                        "ascshopifypipelineArtifactsBucketA21E6ABC",
+                                        "ecspipelineArtifactsBucket024C5E23",
                                         "Arn"
                                       ]
                                     },
@@ -2351,7 +2317,7 @@
                                         [
                                           {
                                             "Fn::GetAtt": [
-                                              "ascshopifypipelineArtifactsBucketA21E6ABC",
+                                              "ecspipelineArtifactsBucket024C5E23",
                                               "Arn"
                                             ]
                                           },
@@ -2372,7 +2338,7 @@
                                   "Effect": "Allow",
                                   "Resource": {
                                     "Fn::GetAtt": [
-                                      "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF",
+                                      "ecspipelineArtifactsBucketEncryptionKeyAAB73B69",
                                       "Arn"
                                     ]
                                   }
@@ -2383,13 +2349,13 @@
                                   "Resource": [
                                     {
                                       "Fn::GetAtt": [
-                                        "ascshopifypipelineDeployECSServiceCodePipelineActionRoleA878AF01",
+                                        "ecspipelineBuildCodeBuildCodePipelineActionRole0738F540",
                                         "Arn"
                                       ]
                                     },
                                     {
                                       "Fn::GetAtt": [
-                                        "ascshopifypipelinebuildCodeBuildCodePipelineActionRole12854882",
+                                        "ecspipelineDeployECSServiceCodePipelineActionRole9EAE14E7",
                                         "Arn"
                                       ]
                                     }
@@ -2398,10 +2364,10 @@
                               ],
                               "Version": "2012-10-17"
                             },
-                            "policyName": "ascshopifypipelineRoleDefaultPolicy647BF127",
+                            "policyName": "ecspipelineRoleDefaultPolicyA137CCB5",
                             "roles": [
                               {
-                                "Ref": "ascshopifypipelineRole870C3F8B"
+                                "Ref": "ecspipelineRole530E3CB9"
                               }
                             ]
                           }
@@ -2425,25 +2391,25 @@
               },
               "Resource": {
                 "id": "Resource",
-                "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Resource",
+                "path": "CdkMsgAppBackendStack/ecs-pipeline/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::CodePipeline::Pipeline",
                   "aws:cdk:cloudformation:props": {
                     "roleArn": {
                       "Fn::GetAtt": [
-                        "ascshopifypipelineRole870C3F8B",
+                        "ecspipelineRole530E3CB9",
                         "Arn"
                       ]
                     },
                     "stages": [
                       {
-                        "name": "source",
+                        "name": "Source",
                         "actions": [
                           {
                             "name": "github_source",
                             "outputArtifacts": [
                               {
-                                "name": "Artifact_source_github_source"
+                                "name": "Artifact_Source_github_source"
                               }
                             ],
                             "actionTypeId": {
@@ -2460,7 +2426,7 @@
                                 "Ref": "githubRespository"
                               },
                               "Branch": "main",
-                              "OAuthToken": "{{resolve:secretsmanager:/bravemang532532:SecretString:::}}",
+                              "OAuthToken": "{{resolve:secretsmanager:gitToken:SecretString:::}}",
                               "PollForSourceChanges": false
                             },
                             "runOrder": 1
@@ -2468,18 +2434,18 @@
                         ]
                       },
                       {
-                        "name": "build",
+                        "name": "Build",
                         "actions": [
                           {
                             "name": "CodeBuild",
                             "inputArtifacts": [
                               {
-                                "name": "Artifact_source_github_source"
+                                "name": "Artifact_Source_github_source"
                               }
                             ],
                             "outputArtifacts": [
                               {
-                                "name": "Artifact_build_CodeBuild"
+                                "name": "Artifact_Build_CodeBuild"
                               }
                             ],
                             "actionTypeId": {
@@ -2496,7 +2462,7 @@
                             "runOrder": 1,
                             "roleArn": {
                               "Fn::GetAtt": [
-                                "ascshopifypipelinebuildCodeBuildCodePipelineActionRole12854882",
+                                "ecspipelineBuildCodeBuildCodePipelineActionRole0738F540",
                                 "Arn"
                               ]
                             }
@@ -2510,7 +2476,7 @@
                             "name": "ECS-Service",
                             "inputArtifacts": [
                               {
-                                "name": "Artifact_build_CodeBuild"
+                                "name": "Artifact_Build_CodeBuild"
                               }
                             ],
                             "actionTypeId": {
@@ -2533,7 +2499,7 @@
                             "runOrder": 1,
                             "roleArn": {
                               "Fn::GetAtt": [
-                                "ascshopifypipelineDeployECSServiceCodePipelineActionRoleA878AF01",
+                                "ecspipelineDeployECSServiceCodePipelineActionRole9EAE14E7",
                                 "Arn"
                               ]
                             }
@@ -2544,13 +2510,13 @@
                     "artifactStore": {
                       "type": "S3",
                       "location": {
-                        "Ref": "ascshopifypipelineArtifactsBucketA21E6ABC"
+                        "Ref": "ecspipelineArtifactsBucket024C5E23"
                       },
                       "encryptionKey": {
                         "type": "KMS",
                         "id": {
                           "Fn::GetAtt": [
-                            "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF",
+                            "ecspipelineArtifactsBucketEncryptionKeyAAB73B69",
                             "Arn"
                           ]
                         }
@@ -2563,23 +2529,23 @@
                   "version": "2.56.0"
                 }
               },
-              "source": {
-                "id": "source",
-                "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/source",
+              "Source": {
+                "id": "Source",
+                "path": "CdkMsgAppBackendStack/ecs-pipeline/Source",
                 "children": {
                   "github_source": {
                     "id": "github_source",
-                    "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/source/github_source",
+                    "path": "CdkMsgAppBackendStack/ecs-pipeline/Source/github_source",
                     "children": {
                       "WebhookResource": {
                         "id": "WebhookResource",
-                        "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/source/github_source/WebhookResource",
+                        "path": "CdkMsgAppBackendStack/ecs-pipeline/Source/github_source/WebhookResource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::CodePipeline::Webhook",
                           "aws:cdk:cloudformation:props": {
                             "authentication": "GITHUB_HMAC",
                             "authenticationConfiguration": {
-                              "secretToken": "{{resolve:secretsmanager:/bravemang532532:SecretString:::}}"
+                              "secretToken": "{{resolve:secretsmanager:gitToken:SecretString:::}}"
                             },
                             "filters": [
                               {
@@ -2589,7 +2555,7 @@
                             ],
                             "targetAction": "github_source",
                             "targetPipeline": {
-                              "Ref": "ascshopifypipeline84874331"
+                              "Ref": "ecspipeline58DBBE12"
                             },
                             "targetPipelineVersion": 1,
                             "registerWithThirdParty": true
@@ -2612,21 +2578,21 @@
                   "version": "10.1.198"
                 }
               },
-              "build": {
-                "id": "build",
-                "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/build",
+              "Build": {
+                "id": "Build",
+                "path": "CdkMsgAppBackendStack/ecs-pipeline/Build",
                 "children": {
                   "CodeBuild": {
                     "id": "CodeBuild",
-                    "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/build/CodeBuild",
+                    "path": "CdkMsgAppBackendStack/ecs-pipeline/Build/CodeBuild",
                     "children": {
                       "CodePipelineActionRole": {
                         "id": "CodePipelineActionRole",
-                        "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/build/CodeBuild/CodePipelineActionRole",
+                        "path": "CdkMsgAppBackendStack/ecs-pipeline/Build/CodeBuild/CodePipelineActionRole",
                         "children": {
                           "ImportCodePipelineActionRole": {
                             "id": "ImportCodePipelineActionRole",
-                            "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/build/CodeBuild/CodePipelineActionRole/ImportCodePipelineActionRole",
+                            "path": "CdkMsgAppBackendStack/ecs-pipeline/Build/CodeBuild/CodePipelineActionRole/ImportCodePipelineActionRole",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.Resource",
                               "version": "2.56.0"
@@ -2634,7 +2600,7 @@
                           },
                           "Resource": {
                             "id": "Resource",
-                            "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/build/CodeBuild/CodePipelineActionRole/Resource",
+                            "path": "CdkMsgAppBackendStack/ecs-pipeline/Build/CodeBuild/CodePipelineActionRole/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                               "aws:cdk:cloudformation:props": {
@@ -2674,11 +2640,11 @@
                           },
                           "DefaultPolicy": {
                             "id": "DefaultPolicy",
-                            "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/build/CodeBuild/CodePipelineActionRole/DefaultPolicy",
+                            "path": "CdkMsgAppBackendStack/ecs-pipeline/Build/CodeBuild/CodePipelineActionRole/DefaultPolicy",
                             "children": {
                               "Resource": {
                                 "id": "Resource",
-                                "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/build/CodeBuild/CodePipelineActionRole/DefaultPolicy/Resource",
+                                "path": "CdkMsgAppBackendStack/ecs-pipeline/Build/CodeBuild/CodePipelineActionRole/DefaultPolicy/Resource",
                                 "attributes": {
                                   "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                                   "aws:cdk:cloudformation:props": {
@@ -2701,10 +2667,10 @@
                                       ],
                                       "Version": "2012-10-17"
                                     },
-                                    "policyName": "ascshopifypipelinebuildCodeBuildCodePipelineActionRoleDefaultPolicy08D79175",
+                                    "policyName": "ecspipelineBuildCodeBuildCodePipelineActionRoleDefaultPolicy9F22A8D4",
                                     "roles": [
                                       {
-                                        "Ref": "ascshopifypipelinebuildCodeBuildCodePipelineActionRole12854882"
+                                        "Ref": "ecspipelineBuildCodeBuildCodePipelineActionRole0738F540"
                                       }
                                     ]
                                   }
@@ -2740,19 +2706,19 @@
               },
               "Deploy": {
                 "id": "Deploy",
-                "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Deploy",
+                "path": "CdkMsgAppBackendStack/ecs-pipeline/Deploy",
                 "children": {
                   "ECS-Service": {
                     "id": "ECS-Service",
-                    "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Deploy/ECS-Service",
+                    "path": "CdkMsgAppBackendStack/ecs-pipeline/Deploy/ECS-Service",
                     "children": {
                       "CodePipelineActionRole": {
                         "id": "CodePipelineActionRole",
-                        "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Deploy/ECS-Service/CodePipelineActionRole",
+                        "path": "CdkMsgAppBackendStack/ecs-pipeline/Deploy/ECS-Service/CodePipelineActionRole",
                         "children": {
                           "ImportCodePipelineActionRole": {
                             "id": "ImportCodePipelineActionRole",
-                            "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Deploy/ECS-Service/CodePipelineActionRole/ImportCodePipelineActionRole",
+                            "path": "CdkMsgAppBackendStack/ecs-pipeline/Deploy/ECS-Service/CodePipelineActionRole/ImportCodePipelineActionRole",
                             "constructInfo": {
                               "fqn": "aws-cdk-lib.Resource",
                               "version": "2.56.0"
@@ -2760,7 +2726,7 @@
                           },
                           "Resource": {
                             "id": "Resource",
-                            "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Deploy/ECS-Service/CodePipelineActionRole/Resource",
+                            "path": "CdkMsgAppBackendStack/ecs-pipeline/Deploy/ECS-Service/CodePipelineActionRole/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                               "aws:cdk:cloudformation:props": {
@@ -2800,11 +2766,11 @@
                           },
                           "DefaultPolicy": {
                             "id": "DefaultPolicy",
-                            "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Deploy/ECS-Service/CodePipelineActionRole/DefaultPolicy",
+                            "path": "CdkMsgAppBackendStack/ecs-pipeline/Deploy/ECS-Service/CodePipelineActionRole/DefaultPolicy",
                             "children": {
                               "Resource": {
                                 "id": "Resource",
-                                "path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Deploy/ECS-Service/CodePipelineActionRole/DefaultPolicy/Resource",
+                                "path": "CdkMsgAppBackendStack/ecs-pipeline/Deploy/ECS-Service/CodePipelineActionRole/DefaultPolicy/Resource",
                                 "attributes": {
                                   "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                                   "aws:cdk:cloudformation:props": {
@@ -2845,7 +2811,7 @@
                                           "Resource": [
                                             {
                                               "Fn::GetAtt": [
-                                                "ascshopifypipelineArtifactsBucketA21E6ABC",
+                                                "ecspipelineArtifactsBucket024C5E23",
                                                 "Arn"
                                               ]
                                             },
@@ -2855,7 +2821,7 @@
                                                 [
                                                   {
                                                     "Fn::GetAtt": [
-                                                      "ascshopifypipelineArtifactsBucketA21E6ABC",
+                                                      "ecspipelineArtifactsBucket024C5E23",
                                                       "Arn"
                                                     ]
                                                   },
@@ -2873,7 +2839,7 @@
                                           "Effect": "Allow",
                                           "Resource": {
                                             "Fn::GetAtt": [
-                                              "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF",
+                                              "ecspipelineArtifactsBucketEncryptionKeyAAB73B69",
                                               "Arn"
                                             ]
                                           }
@@ -2881,10 +2847,10 @@
                                       ],
                                       "Version": "2012-10-17"
                                     },
-                                    "policyName": "ascshopifypipelineDeployECSServiceCodePipelineActionRoleDefaultPolicy8C0E3266",
+                                    "policyName": "ecspipelineDeployECSServiceCodePipelineActionRoleDefaultPolicy5732BE2B",
                                     "roles": [
                                       {
-                                        "Ref": "ascshopifypipelineDeployECSServiceCodePipelineActionRoleA878AF01"
+                                        "Ref": "ecspipelineDeployECSServiceCodePipelineActionRole9EAE14E7"
                                       }
                                     ]
                                   }

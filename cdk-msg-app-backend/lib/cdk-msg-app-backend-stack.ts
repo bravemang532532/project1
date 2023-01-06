@@ -223,6 +223,22 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
 
 
 
+
+
+    const sourceOutput = new codepipeline.Artifact();
+    const buildOutput = new codepipeline.Artifact();
+    const nameOfGithubPersonTokenParameterAsString = githubPersonalTokenSecretName.valueAsString
+
+    const sourceAction = new codepipeline_actions.GitHubSourceAction({
+      actionName: 'github_source',
+      owner: githubUserName.valueAsString,
+      repo: githubRepository.valueAsString,
+      branch: 'main',
+      oauthToken: cdk.SecretValue.secretsManager(nameOfGithubPersonTokenParameterAsString),
+      output: sourceOutput
+    });
+
+
     const project = new codebuild.PipelineProject(this, 'MyProject', {
       environment: {
         buildImage: codebuild.LinuxBuildImage.STANDARD_2_0,
@@ -249,20 +265,6 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
       ]
     });
     project.addToRolePolicy(buildRolePolicy);
-
-    const sourceOutput = new codepipeline.Artifact();
-    const buildOutput = new codepipeline.Artifact();
-    const nameOfGithubPersonTokenParameterAsString = githubPersonalTokenSecretName.valueAsString
-    const sourceAction = new codepipeline_actions.GitHubSourceAction({
-      actionName: 'github_source',
-      owner: githubUserName.valueAsString,
-      repo: githubRepository.valueAsString,
-      branch: 'main',
-      // oauthToken: cdk.SecretValue.secretsManager(nameOfGithubPersonTokenParameterAsString),
-      oauthToken: cdk.SecretValue.secretsManager('gitToken'),
-      output: sourceOutput
-    });
-
 
     const buildAction = new codepipeline_actions.CodeBuildAction({
       actionName: 'CodeBuild',
