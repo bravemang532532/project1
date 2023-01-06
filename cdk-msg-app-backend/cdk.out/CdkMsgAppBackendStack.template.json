@@ -1,0 +1,2313 @@
+{
+ "Parameters": {
+  "githubUserName": {
+   "Type": "String",
+   "Description": "Github username for source code repository"
+  },
+  "githubRespository": {
+   "Type": "String",
+   "Default": "amazon-ecs-fargate-cdk-v2-cicd",
+   "Description": "Github source code repository"
+  },
+  "githubPersonalTokenSecretName": {
+   "Type": "String",
+   "Default": "/bravemang532532/amazon-ecs-fargate-cdk-v2-cicd/github/personal_access_token",
+   "Description": "The name of the AWS Secrets Manager Secret which holds the GitHub Personal Access Token for this project."
+  },
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Resources": {
+  "Messages804FA4EB": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "app_id",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "created_at",
+      "KeyType": "RANGE"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "app_id",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "created_at",
+      "AttributeType": "N"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/Messages/Resource"
+   }
+  },
+  "workshopvpc47C6E775": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.1.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CdkMsgAppBackendStack/workshop-vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/Resource"
+   }
+  },
+  "workshopvpcPublicSubnet1SubnetD37BF68D": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "workshopvpc47C6E775"
+    },
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.1.0.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1/Subnet"
+   }
+  },
+  "workshopvpcPublicSubnet1RouteTableCB422C67": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "workshopvpc47C6E775"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1/RouteTable"
+   }
+  },
+  "workshopvpcPublicSubnet1RouteTableAssociation834B329E": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "workshopvpcPublicSubnet1RouteTableCB422C67"
+    },
+    "SubnetId": {
+     "Ref": "workshopvpcPublicSubnet1SubnetD37BF68D"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "workshopvpcPublicSubnet1DefaultRouteDE512599": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "workshopvpcPublicSubnet1RouteTableCB422C67"
+    },
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "workshopvpcIGW18E514FE"
+    }
+   },
+   "DependsOn": [
+    "workshopvpcVPCGW696D37B3"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "workshopvpcPublicSubnet1EIP84321D52": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1/EIP"
+   }
+  },
+  "workshopvpcPublicSubnet1NATGatewayBE25803F": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "SubnetId": {
+     "Ref": "workshopvpcPublicSubnet1SubnetD37BF68D"
+    },
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "workshopvpcPublicSubnet1EIP84321D52",
+      "AllocationId"
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "workshopvpcPublicSubnet1DefaultRouteDE512599",
+    "workshopvpcPublicSubnet1RouteTableAssociation834B329E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1/NATGateway"
+   }
+  },
+  "workshopvpcPublicSubnet2Subnet1A30A2C2": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "workshopvpc47C6E775"
+    },
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.1.1.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet2/Subnet"
+   }
+  },
+  "workshopvpcPublicSubnet2RouteTableFC44E864": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "workshopvpc47C6E775"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet2/RouteTable"
+   }
+  },
+  "workshopvpcPublicSubnet2RouteTableAssociation86A239B6": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "workshopvpcPublicSubnet2RouteTableFC44E864"
+    },
+    "SubnetId": {
+     "Ref": "workshopvpcPublicSubnet2Subnet1A30A2C2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "workshopvpcPublicSubnet2DefaultRoute5F34C542": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "workshopvpcPublicSubnet2RouteTableFC44E864"
+    },
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "workshopvpcIGW18E514FE"
+    }
+   },
+   "DependsOn": [
+    "workshopvpcVPCGW696D37B3"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "workshopvpcPrivateSubnet1Subnet07186DE2": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "workshopvpc47C6E775"
+    },
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.1.2.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet1/Subnet"
+   }
+  },
+  "workshopvpcPrivateSubnet1RouteTable752F6D1B": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "workshopvpc47C6E775"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet1/RouteTable"
+   }
+  },
+  "workshopvpcPrivateSubnet1RouteTableAssociation25AED9C3": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "workshopvpcPrivateSubnet1RouteTable752F6D1B"
+    },
+    "SubnetId": {
+     "Ref": "workshopvpcPrivateSubnet1Subnet07186DE2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet1/RouteTableAssociation"
+   }
+  },
+  "workshopvpcPrivateSubnet1DefaultRouteF20A2F29": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "workshopvpcPrivateSubnet1RouteTable752F6D1B"
+    },
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "workshopvpcPublicSubnet1NATGatewayBE25803F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet1/DefaultRoute"
+   }
+  },
+  "workshopvpcPrivateSubnet2SubnetCE80E107": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "workshopvpc47C6E775"
+    },
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.1.3.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet2/Subnet"
+   }
+  },
+  "workshopvpcPrivateSubnet2RouteTable0190C3D8": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "workshopvpc47C6E775"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet2/RouteTable"
+   }
+  },
+  "workshopvpcPrivateSubnet2RouteTableAssociation56FB9083": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "workshopvpcPrivateSubnet2RouteTable0190C3D8"
+    },
+    "SubnetId": {
+     "Ref": "workshopvpcPrivateSubnet2SubnetCE80E107"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet2/RouteTableAssociation"
+   }
+  },
+  "workshopvpcPrivateSubnet2DefaultRoute73ABF272": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "workshopvpcPrivateSubnet2RouteTable0190C3D8"
+    },
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "workshopvpcPublicSubnet1NATGatewayBE25803F"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet2/DefaultRoute"
+   }
+  },
+  "workshopvpcIGW18E514FE": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CdkMsgAppBackendStack/workshop-vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/IGW"
+   }
+  },
+  "workshopvpcVPCGW696D37B3": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "VpcId": {
+     "Ref": "workshopvpc47C6E775"
+    },
+    "InternetGatewayId": {
+     "Ref": "workshopvpcIGW18E514FE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-vpc/VPCGW"
+   }
+  },
+  "workshopapi2ADF1ECF": {
+   "Type": "AWS::ECR::Repository",
+   "Properties": {
+    "RepositoryName": "workshop-api"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/workshop-api/Resource"
+   }
+  },
+  "MyCluster4C1BA579": {
+   "Type": "AWS::ECS::Cluster",
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/MyCluster/Resource"
+   }
+  },
+  "DeployDockerImageCustomResource1798FC60": {
+   "Type": "Custom::CDKBucketDeployment",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiB28EAD8E4",
+      "Arn"
+     ]
+    },
+    "SrcImage": {
+     "Fn::Join": [
+      "",
+      [
+       "docker://",
+       {
+        "Fn::Sub": "${AWS::AccountId}.dkr.ecr.${AWS::Region}.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-${AWS::AccountId}-${AWS::Region}:722b49da1b23b46ad99a196362724afa2c86042c37e7e77bf5769ff3bc7682d3"
+       }
+      ]
+     ]
+    },
+    "DestImage": {
+     "Fn::Join": [
+      "",
+      [
+       "docker://",
+       {
+        "Fn::Select": [
+         4,
+         {
+          "Fn::Split": [
+           ":",
+           {
+            "Fn::GetAtt": [
+             "workshopapi2ADF1ECF",
+             "Arn"
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       ".dkr.ecr.",
+       {
+        "Fn::Select": [
+         3,
+         {
+          "Fn::Split": [
+           ":",
+           {
+            "Fn::GetAtt": [
+             "workshopapi2ADF1ECF",
+             "Arn"
+            ]
+           }
+          ]
+         }
+        ]
+       },
+       ".",
+       {
+        "Ref": "AWS::URLSuffix"
+       },
+       "/",
+       {
+        "Ref": "workshopapi2ADF1ECF"
+       },
+       ":latest"
+      ]
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/DeployDockerImage/CustomResource/Default"
+   }
+  },
+  "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRole8C8B0491": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/Custom::CDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiB/ServiceRole/Resource"
+   }
+  },
+  "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRoleDefaultPolicy280095F8": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:CompleteLayerUpload",
+        "ecr:DescribeImageScanFindings",
+        "ecr:DescribeImages",
+        "ecr:DescribeRepositories",
+        "ecr:GetAuthorizationToken",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:GetRepositoryPolicy",
+        "ecr:InitiateLayerUpload",
+        "ecr:ListImages",
+        "ecr:ListTagsForResource",
+        "ecr:PutImage",
+        "ecr:UploadLayerPart",
+        "s3:GetObject"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRoleDefaultPolicy280095F8",
+    "Roles": [
+     {
+      "Ref": "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRole8C8B0491"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/Custom::CDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiB/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiB28EAD8E4": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "5bf1b8234302ff202c4cda9fa6ac3337b67aa20a3201be45d2fcbb6df9535433.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRole8C8B0491",
+      "Arn"
+     ]
+    },
+    "Handler": "main",
+    "MemorySize": 512,
+    "Runtime": "go1.x",
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRoleDefaultPolicy280095F8",
+    "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRole8C8B0491"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/Custom::CDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiB/Resource",
+    "aws:asset:path": "asset.5bf1b8234302ff202c4cda9fa6ac3337b67aa20a3201be45d2fcbb6df9535433",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "ApiTaskDefinitionTaskRole7EE87BD7": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/ApiTaskDefinition/TaskRole/Resource"
+   }
+  },
+  "ApiTaskDefinitionTaskRoleDefaultPolicyA678CF9F": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "dynamodb:*",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "Messages804FA4EB",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ApiTaskDefinitionTaskRoleDefaultPolicyA678CF9F",
+    "Roles": [
+     {
+      "Ref": "ApiTaskDefinitionTaskRole7EE87BD7"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/ApiTaskDefinition/TaskRole/DefaultPolicy/Resource"
+   }
+  },
+  "ApiTaskDefinition51EA709E": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "DYNAMODB_MESSAGES_TABLE",
+        "Value": {
+         "Ref": "Messages804FA4EB"
+        }
+       },
+       {
+        "Name": "APP_ID",
+        "Value": "my-app"
+       }
+      ],
+      "Essential": true,
+      "Image": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Fn::Select": [
+           4,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "workshopapi2ADF1ECF",
+               "Arn"
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         ".dkr.ecr.",
+         {
+          "Fn::Select": [
+           3,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "workshopapi2ADF1ECF",
+               "Arn"
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         ".",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/",
+         {
+          "Ref": "workshopapi2ADF1ECF"
+         }
+        ]
+       ]
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "ApiTaskDefinitionbackendLogGroup20862E8E"
+        },
+        "awslogs-stream-prefix": "workshop-api",
+        "awslogs-region": {
+         "Ref": "AWS::Region"
+        }
+       }
+      },
+      "Name": "backend",
+      "PortMappings": [
+       {
+        "ContainerPort": 3000,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "ApiTaskDefinitionExecutionRoleA3303016",
+      "Arn"
+     ]
+    },
+    "Family": "CdkMsgAppBackendStackApiTaskDefinition7848894E",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "ApiTaskDefinitionTaskRole7EE87BD7",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/ApiTaskDefinition/Resource"
+   }
+  },
+  "ApiTaskDefinitionExecutionRoleA3303016": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/ApiTaskDefinition/ExecutionRole/Resource"
+   }
+  },
+  "ApiTaskDefinitionExecutionRoleDefaultPolicy5B03B3DE": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetAuthorizationToken",
+        "ecr:GetDownloadUrlForLayer",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ApiTaskDefinitionbackendLogGroup20862E8E",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ApiTaskDefinitionExecutionRoleDefaultPolicy5B03B3DE",
+    "Roles": [
+     {
+      "Ref": "ApiTaskDefinitionExecutionRoleA3303016"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/ApiTaskDefinition/ExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "ApiTaskDefinitionbackendLogGroup20862E8E": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/ApiTaskDefinition/backend/LogGroup/Resource"
+   }
+  },
+  "MySGService92FEBE4A": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "CdkMsgAppBackendStack/MySGService",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "from 0.0.0.0/0:3000",
+      "FromPort": 3000,
+      "IpProtocol": "tcp",
+      "ToPort": 3000
+     }
+    ],
+    "VpcId": {
+     "Ref": "workshopvpc47C6E775"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/MySGService/Resource"
+   }
+  },
+  "MySGServicefromCdkMsgAppBackendStackALBSecurityGroupE3156F013000F02FA49B": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "IpProtocol": "tcp",
+    "Description": "Load balancer to target",
+    "FromPort": 3000,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "MySGService92FEBE4A",
+      "GroupId"
+     ]
+    },
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "ALBSecurityGroup8B8624F8",
+      "GroupId"
+     ]
+    },
+    "ToPort": 3000
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/MySGService/from CdkMsgAppBackendStackALBSecurityGroupE3156F01:3000"
+   }
+  },
+  "ServiceD69D759B": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "MyCluster4C1BA579"
+    },
+    "DeploymentConfiguration": {
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 2,
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "backend",
+      "ContainerPort": 3000,
+      "TargetGroupArn": {
+       "Ref": "ALBListenerTargetGroupD5D64FBA"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "MySGService92FEBE4A",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Ref": "workshopvpcPrivateSubnet1Subnet07186DE2"
+       },
+       {
+        "Ref": "workshopvpcPrivateSubnet2SubnetCE80E107"
+       }
+      ]
+     }
+    },
+    "TaskDefinition": {
+     "Ref": "ApiTaskDefinition51EA709E"
+    }
+   },
+   "DependsOn": [
+    "ALBListener3B99FF85",
+    "ALBListenerTargetGroupD5D64FBA"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/Service/Service"
+   }
+  },
+  "ServiceTaskCountTarget23E25614": {
+   "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
+   "Properties": {
+    "MaxCapacity": 6,
+    "MinCapacity": 2,
+    "ResourceId": {
+     "Fn::Join": [
+      "",
+      [
+       "service/",
+       {
+        "Ref": "MyCluster4C1BA579"
+       },
+       "/",
+       {
+        "Fn::GetAtt": [
+         "ServiceD69D759B",
+         "Name"
+        ]
+       }
+      ]
+     ]
+    },
+    "RoleARN": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":iam::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService"
+      ]
+     ]
+    },
+    "ScalableDimension": "ecs:service:DesiredCount",
+    "ServiceNamespace": "ecs"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/Service/TaskCount/Target/Resource"
+   }
+  },
+  "ServiceTaskCountTargetCpuScalingCC8A5DF6": {
+   "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+   "Properties": {
+    "PolicyName": "CdkMsgAppBackendStackServiceTaskCountTargetCpuScaling05322AE3",
+    "PolicyType": "TargetTrackingScaling",
+    "ScalingTargetId": {
+     "Ref": "ServiceTaskCountTarget23E25614"
+    },
+    "TargetTrackingScalingPolicyConfiguration": {
+     "PredefinedMetricSpecification": {
+      "PredefinedMetricType": "ECSServiceAverageCPUUtilization"
+     },
+     "ScaleInCooldown": 60,
+     "ScaleOutCooldown": 60,
+     "TargetValue": 50
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/Service/TaskCount/Target/CpuScaling/Resource"
+   }
+  },
+  "ALBAEE750D2": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "ALBSecurityGroup8B8624F8",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "workshopvpcPublicSubnet1SubnetD37BF68D"
+     },
+     {
+      "Ref": "workshopvpcPublicSubnet2Subnet1A30A2C2"
+     }
+    ],
+    "Type": "application"
+   },
+   "DependsOn": [
+    "workshopvpcPublicSubnet1DefaultRouteDE512599",
+    "workshopvpcPublicSubnet1RouteTableAssociation834B329E",
+    "workshopvpcPublicSubnet2DefaultRoute5F34C542",
+    "workshopvpcPublicSubnet2RouteTableAssociation86A239B6"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/ALB/Resource"
+   }
+  },
+  "ALBSecurityGroup8B8624F8": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Automatically created Security Group for ELB CdkMsgAppBackendStackALBE6FF2B9E",
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow from anyone on port 80",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Ref": "workshopvpc47C6E775"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/ALB/SecurityGroup/Resource"
+   }
+  },
+  "ALBSecurityGrouptoCdkMsgAppBackendStackMySGServiceDE230DEF300011DD7338": {
+   "Type": "AWS::EC2::SecurityGroupEgress",
+   "Properties": {
+    "GroupId": {
+     "Fn::GetAtt": [
+      "ALBSecurityGroup8B8624F8",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "Description": "Load balancer to target",
+    "DestinationSecurityGroupId": {
+     "Fn::GetAtt": [
+      "MySGService92FEBE4A",
+      "GroupId"
+     ]
+    },
+    "FromPort": 3000,
+    "ToPort": 3000
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/ALB/SecurityGroup/to CdkMsgAppBackendStackMySGServiceDE230DEF:3000"
+   }
+  },
+  "ALBListener3B99FF85": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "ALBListenerTargetGroupD5D64FBA"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "ALBAEE750D2"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/ALB/Listener/Resource"
+   }
+  },
+  "ALBListenerTargetGroupD5D64FBA": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "HealthCheckPath": "/api/",
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Ref": "workshopvpc47C6E775"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/ALB/Listener/TargetGroup/Resource"
+   }
+  },
+  "MyProjectRole9BBE5233": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codebuild.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/MyProject/Role/Resource"
+   }
+  },
+  "MyProjectRoleDefaultPolicyB19B7C29": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":log-group:/aws/codebuild/",
+           {
+            "Ref": "MyProject39F7B0AE"
+           },
+           ":*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":log-group:/aws/codebuild/",
+           {
+            "Ref": "MyProject39F7B0AE"
+           }
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "codebuild:BatchPutCodeCoverages",
+        "codebuild:BatchPutTestCases",
+        "codebuild:CreateReport",
+        "codebuild:CreateReportGroup",
+        "codebuild:UpdateReport"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":codebuild:",
+          {
+           "Ref": "AWS::Region"
+          },
+          ":",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":report-group/",
+          {
+           "Ref": "MyProject39F7B0AE"
+          },
+          "-*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:CompleteLayerUpload",
+        "ecr:DescribeImages",
+        "ecr:DescribeRepositories",
+        "ecr:GetAuthorizationToken",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:GetRepositoryPolicy",
+        "ecr:InitiateLayerUpload",
+        "ecr:ListImages",
+        "ecr:PutImage",
+        "ecr:UploadLayerPart"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ascshopifypipelineArtifactsBucketA21E6ABC",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ascshopifypipelineArtifactsBucketA21E6ABC",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey*",
+        "kms:ReEncrypt*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:CompleteLayerUpload",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:InitiateLayerUpload",
+        "ecr:PutImage",
+        "ecr:UploadLayerPart"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "workshopapi2ADF1ECF",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "ecr:batchchecklayeravailability",
+        "ecr:batchgetimage",
+        "ecr:getauthorizationtoken",
+        "ecr:getdownloadurlforlayer",
+        "ecs:describecluster"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "MyCluster4C1BA579",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "MyProjectRoleDefaultPolicyB19B7C29",
+    "Roles": [
+     {
+      "Ref": "MyProjectRole9BBE5233"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/MyProject/Role/DefaultPolicy/Resource"
+   }
+  },
+  "MyProject39F7B0AE": {
+   "Type": "AWS::CodeBuild::Project",
+   "Properties": {
+    "Artifacts": {
+     "Type": "CODEPIPELINE"
+    },
+    "Environment": {
+     "ComputeType": "BUILD_GENERAL1_SMALL",
+     "Image": "aws/codebuild/standard:2.0",
+     "ImagePullCredentialsType": "CODEBUILD",
+     "PrivilegedMode": true,
+     "Type": "LINUX_CONTAINER"
+    },
+    "ServiceRole": {
+     "Fn::GetAtt": [
+      "MyProjectRole9BBE5233",
+      "Arn"
+     ]
+    },
+    "Source": {
+     "Type": "CODEPIPELINE"
+    },
+    "Cache": {
+     "Type": "NO_CACHE"
+    },
+    "EncryptionKey": {
+     "Fn::GetAtt": [
+      "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/MyProject/Resource"
+   }
+  },
+  "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucketEncryptionKey/Resource"
+   }
+  },
+  "ascshopifypipelineArtifactsBucketEncryptionKeyAliasABFC8DE5": {
+   "Type": "AWS::KMS::Alias",
+   "Properties": {
+    "AliasName": "alias/codepipeline-cdkmsgappbackendstack-asc-shopify-pipeline-f3cf1d58",
+    "TargetKeyId": {
+     "Fn::GetAtt": [
+      "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF",
+      "Arn"
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucketEncryptionKeyAlias/Resource"
+   }
+  },
+  "ascshopifypipelineArtifactsBucketA21E6ABC": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": {
+         "Fn::GetAtt": [
+          "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF",
+          "Arn"
+         ]
+        },
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucket/Resource"
+   }
+  },
+  "ascshopifypipelineArtifactsBucketPolicy5CAC7A7A": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "ascshopifypipelineArtifactsBucketA21E6ABC"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ascshopifypipelineArtifactsBucketA21E6ABC",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ascshopifypipelineArtifactsBucketA21E6ABC",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucket/Policy/Resource"
+   }
+  },
+  "ascshopifypipelineRole870C3F8B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codepipeline.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Role/Resource"
+   }
+  },
+  "ascshopifypipelineRoleDefaultPolicy647BF127": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ascshopifypipelineArtifactsBucketA21E6ABC",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ascshopifypipelineArtifactsBucketA21E6ABC",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey*",
+        "kms:ReEncrypt*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ascshopifypipelineDeployECSServiceCodePipelineActionRoleA878AF01",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "ascshopifypipelinebuildCodeBuildCodePipelineActionRole12854882",
+          "Arn"
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ascshopifypipelineRoleDefaultPolicy647BF127",
+    "Roles": [
+     {
+      "Ref": "ascshopifypipelineRole870C3F8B"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Role/DefaultPolicy/Resource"
+   }
+  },
+  "ascshopifypipeline84874331": {
+   "Type": "AWS::CodePipeline::Pipeline",
+   "Properties": {
+    "RoleArn": {
+     "Fn::GetAtt": [
+      "ascshopifypipelineRole870C3F8B",
+      "Arn"
+     ]
+    },
+    "Stages": [
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Source",
+         "Owner": "ThirdParty",
+         "Provider": "GitHub",
+         "Version": "1"
+        },
+        "Configuration": {
+         "Owner": {
+          "Ref": "githubUserName"
+         },
+         "Repo": {
+          "Ref": "githubRespository"
+         },
+         "Branch": "main",
+         "OAuthToken": "{{resolve:secretsmanager:/bravemang532532:SecretString:::}}",
+         "PollForSourceChanges": false
+        },
+        "Name": "github_source",
+        "OutputArtifacts": [
+         {
+          "Name": "Artifact_source_github_source"
+         }
+        ],
+        "RunOrder": 1
+       }
+      ],
+      "Name": "source"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Build",
+         "Owner": "AWS",
+         "Provider": "CodeBuild",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ProjectName": {
+          "Ref": "MyProject39F7B0AE"
+         }
+        },
+        "InputArtifacts": [
+         {
+          "Name": "Artifact_source_github_source"
+         }
+        ],
+        "Name": "CodeBuild",
+        "OutputArtifacts": [
+         {
+          "Name": "Artifact_build_CodeBuild"
+         }
+        ],
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "ascshopifypipelinebuildCodeBuildCodePipelineActionRole12854882",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       }
+      ],
+      "Name": "build"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Deploy",
+         "Owner": "AWS",
+         "Provider": "ECS",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ClusterName": {
+          "Ref": "MyCluster4C1BA579"
+         },
+         "ServiceName": {
+          "Fn::GetAtt": [
+           "ServiceD69D759B",
+           "Name"
+          ]
+         }
+        },
+        "InputArtifacts": [
+         {
+          "Name": "Artifact_build_CodeBuild"
+         }
+        ],
+        "Name": "ECS-Service",
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "ascshopifypipelineDeployECSServiceCodePipelineActionRoleA878AF01",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       }
+      ],
+      "Name": "Deploy"
+     }
+    ],
+    "ArtifactStore": {
+     "EncryptionKey": {
+      "Id": {
+       "Fn::GetAtt": [
+        "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF",
+        "Arn"
+       ]
+      },
+      "Type": "KMS"
+     },
+     "Location": {
+      "Ref": "ascshopifypipelineArtifactsBucketA21E6ABC"
+     },
+     "Type": "S3"
+    }
+   },
+   "DependsOn": [
+    "ascshopifypipelineRoleDefaultPolicy647BF127",
+    "ascshopifypipelineRole870C3F8B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Resource"
+   }
+  },
+  "ascshopifypipelinesourcegithubsourceWebhookResourceA645E472": {
+   "Type": "AWS::CodePipeline::Webhook",
+   "Properties": {
+    "Authentication": "GITHUB_HMAC",
+    "AuthenticationConfiguration": {
+     "SecretToken": "{{resolve:secretsmanager:/bravemang532532:SecretString:::}}"
+    },
+    "Filters": [
+     {
+      "JsonPath": "$.ref",
+      "MatchEquals": "refs/heads/{Branch}"
+     }
+    ],
+    "TargetAction": "github_source",
+    "TargetPipeline": {
+     "Ref": "ascshopifypipeline84874331"
+    },
+    "TargetPipelineVersion": 1,
+    "RegisterWithThirdParty": true
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/asc-shopify-pipeline/source/github_source/WebhookResource"
+   }
+  },
+  "ascshopifypipelinebuildCodeBuildCodePipelineActionRole12854882": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/asc-shopify-pipeline/build/CodeBuild/CodePipelineActionRole/Resource"
+   }
+  },
+  "ascshopifypipelinebuildCodeBuildCodePipelineActionRoleDefaultPolicy08D79175": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "codebuild:BatchGetBuilds",
+        "codebuild:StartBuild",
+        "codebuild:StopBuild"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "MyProject39F7B0AE",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ascshopifypipelinebuildCodeBuildCodePipelineActionRoleDefaultPolicy08D79175",
+    "Roles": [
+     {
+      "Ref": "ascshopifypipelinebuildCodeBuildCodePipelineActionRole12854882"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/asc-shopify-pipeline/build/CodeBuild/CodePipelineActionRole/DefaultPolicy/Resource"
+   }
+  },
+  "ascshopifypipelineDeployECSServiceCodePipelineActionRoleA878AF01": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Deploy/ECS-Service/CodePipelineActionRole/Resource"
+   }
+  },
+  "ascshopifypipelineDeployECSServiceCodePipelineActionRoleDefaultPolicy8C0E3266": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ecs:DescribeServices",
+        "ecs:DescribeTaskDefinition",
+        "ecs:DescribeTasks",
+        "ecs:ListTasks",
+        "ecs:RegisterTaskDefinition",
+        "ecs:UpdateService"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": "iam:PassRole",
+       "Condition": {
+        "StringEqualsIfExists": {
+         "iam:PassedToService": [
+          "ec2.amazonaws.com",
+          "ecs-tasks.amazonaws.com"
+         ]
+        }
+       },
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ascshopifypipelineArtifactsBucketA21E6ABC",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ascshopifypipelineArtifactsBucketA21E6ABC",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ascshopifypipelineDeployECSServiceCodePipelineActionRoleDefaultPolicy8C0E3266",
+    "Roles": [
+     {
+      "Ref": "ascshopifypipelineDeployECSServiceCodePipelineActionRoleA878AF01"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/asc-shopify-pipeline/Deploy/ECS-Service/CodePipelineActionRole/DefaultPolicy/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31U227bMAz9lr0r3tpiBfaYpBcEKzYjLrrHgpZZV7EsGbqkCAz/+yjJjp0O2BOPyCORPCR0nX2/zb59gQ+74lWzkqLM+sIBb9j2TeVgoEWHhlH8ta9OClpdEeMZSomBEcHAkF9n/UvHg+sl37Lcl1LwwpcKXfDNaK+9w/P15J99a2s1F+CEVmdyAPe7PJhf4B7B4QecWG7EkeD88E5RnYQnQqpkPK0dtfTeonKsQO6NcKdHo30Xa/ivY6dqg9b+47+P7tC5yfo9dtoKp01MuzjNcAM26mSzfiu9DZoSdYIPYGoIGtjmDt+EEpMCnz1aORAKzcI33i3QHAVPqo6w4CCDquGRrfbKxXJfwVp0NrvTvEGza6EOspOIEtqyAhq/ULVEp9WDVzylmAA9PuGBCWipdZ0mGW2uaepRg4QGZm+mdCmHvcn6jafELgjCEgwXRpTM/M7yPDCpa9LvSdfnWU14YNB1RIqrA95pS71TH9TNWQRTj8t46Unm2dDO04Ui3ZsruHCQgBKsE1xqqEp6RnGKHWn513P6J4ptYiwN+eK85AmavRo5E17EU2HnVhfHgXFdYemFrLI+Fx1ShZgbfUAeOxxhonVjfGZGygL/wfJd62ZgTUvy/sTYdzBrKSCufgTDQPtstTdpy35713nH4lzpx6hJCLalddbtkrXEtL2VSLujqLDsYL8er26zqx/0AR2sECtDOypazPbJ/gUqGGqQnAQAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMsgAppBackendStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "TableName": {
+   "Value": {
+    "Ref": "Messages804FA4EB"
+   }
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

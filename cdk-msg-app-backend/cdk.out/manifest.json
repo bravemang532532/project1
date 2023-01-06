@@ -1,0 +1,448 @@
+{
+  "version": "22.0.0",
+  "artifacts": {
+    "CdkMsgAppBackendStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "CdkMsgAppBackendStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "CdkMsgAppBackendStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "CdkMsgAppBackendStack.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/4251de8e10e1f1ce4dd935d34f42b24e45b26a620fd8c3feefa5b931a0deff54.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "CdkMsgAppBackendStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "CdkMsgAppBackendStack.assets"
+      ],
+      "metadata": {
+        "/CdkMsgAppBackendStack/githubUserName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "githubUserName"
+          }
+        ],
+        "/CdkMsgAppBackendStack/githubRespository": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "githubRespository"
+          }
+        ],
+        "/CdkMsgAppBackendStack/githubPersonalTokenSecretName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "githubPersonalTokenSecretName"
+          }
+        ],
+        "/CdkMsgAppBackendStack/Messages/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Messages804FA4EB"
+          }
+        ],
+        "/CdkMsgAppBackendStack/TableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TableName"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpc47C6E775"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPublicSubnet1SubnetD37BF68D"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPublicSubnet1RouteTableCB422C67"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPublicSubnet1RouteTableAssociation834B329E"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPublicSubnet1DefaultRouteDE512599"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPublicSubnet1EIP84321D52"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PublicSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPublicSubnet1NATGatewayBE25803F"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PublicSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPublicSubnet2Subnet1A30A2C2"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PublicSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPublicSubnet2RouteTableFC44E864"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PublicSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPublicSubnet2RouteTableAssociation86A239B6"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PublicSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPublicSubnet2DefaultRoute5F34C542"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPrivateSubnet1Subnet07186DE2"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPrivateSubnet1RouteTable752F6D1B"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPrivateSubnet1RouteTableAssociation25AED9C3"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPrivateSubnet1DefaultRouteF20A2F29"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPrivateSubnet2SubnetCE80E107"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPrivateSubnet2RouteTable0190C3D8"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPrivateSubnet2RouteTableAssociation56FB9083"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/PrivateSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcPrivateSubnet2DefaultRoute73ABF272"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcIGW18E514FE"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-vpc/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopvpcVPCGW696D37B3"
+          }
+        ],
+        "/CdkMsgAppBackendStack/workshop-api/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "workshopapi2ADF1ECF"
+          }
+        ],
+        "/CdkMsgAppBackendStack/MyCluster/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyCluster4C1BA579"
+          }
+        ],
+        "/CdkMsgAppBackendStack/DeployDockerImage/CustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeployDockerImageCustomResource1798FC60"
+          }
+        ],
+        "/CdkMsgAppBackendStack/Custom::CDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiB/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRole8C8B0491"
+          }
+        ],
+        "/CdkMsgAppBackendStack/Custom::CDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiB/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiBServiceRoleDefaultPolicy280095F8"
+          }
+        ],
+        "/CdkMsgAppBackendStack/Custom::CDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiB/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKECRDeploymentbd07c930edb94112a20f03f096f53666512MiB28EAD8E4"
+          }
+        ],
+        "/CdkMsgAppBackendStack/ApiTaskDefinition/TaskRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiTaskDefinitionTaskRole7EE87BD7"
+          }
+        ],
+        "/CdkMsgAppBackendStack/ApiTaskDefinition/TaskRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiTaskDefinitionTaskRoleDefaultPolicyA678CF9F"
+          }
+        ],
+        "/CdkMsgAppBackendStack/ApiTaskDefinition/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiTaskDefinition51EA709E"
+          }
+        ],
+        "/CdkMsgAppBackendStack/ApiTaskDefinition/ExecutionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiTaskDefinitionExecutionRoleA3303016"
+          }
+        ],
+        "/CdkMsgAppBackendStack/ApiTaskDefinition/ExecutionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiTaskDefinitionExecutionRoleDefaultPolicy5B03B3DE"
+          }
+        ],
+        "/CdkMsgAppBackendStack/ApiTaskDefinition/backend/LogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiTaskDefinitionbackendLogGroup20862E8E"
+          }
+        ],
+        "/CdkMsgAppBackendStack/MySGService/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MySGService92FEBE4A"
+          }
+        ],
+        "/CdkMsgAppBackendStack/MySGService/from CdkMsgAppBackendStackALBSecurityGroupE3156F01:3000": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MySGServicefromCdkMsgAppBackendStackALBSecurityGroupE3156F013000F02FA49B"
+          }
+        ],
+        "/CdkMsgAppBackendStack/Service/Service": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServiceD69D759B"
+          }
+        ],
+        "/CdkMsgAppBackendStack/Service/TaskCount/Target/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServiceTaskCountTarget23E25614"
+          }
+        ],
+        "/CdkMsgAppBackendStack/Service/TaskCount/Target/CpuScaling/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ServiceTaskCountTargetCpuScalingCC8A5DF6"
+          }
+        ],
+        "/CdkMsgAppBackendStack/ALB/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ALBAEE750D2"
+          }
+        ],
+        "/CdkMsgAppBackendStack/ALB/SecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ALBSecurityGroup8B8624F8"
+          }
+        ],
+        "/CdkMsgAppBackendStack/ALB/SecurityGroup/to CdkMsgAppBackendStackMySGServiceDE230DEF:3000": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ALBSecurityGrouptoCdkMsgAppBackendStackMySGServiceDE230DEF300011DD7338"
+          }
+        ],
+        "/CdkMsgAppBackendStack/ALB/Listener/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ALBListener3B99FF85"
+          }
+        ],
+        "/CdkMsgAppBackendStack/ALB/Listener/TargetGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ALBListenerTargetGroupD5D64FBA"
+          }
+        ],
+        "/CdkMsgAppBackendStack/MyProject/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyProjectRole9BBE5233"
+          }
+        ],
+        "/CdkMsgAppBackendStack/MyProject/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyProjectRoleDefaultPolicyB19B7C29"
+          }
+        ],
+        "/CdkMsgAppBackendStack/MyProject/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyProject39F7B0AE"
+          }
+        ],
+        "/CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucketEncryptionKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ascshopifypipelineArtifactsBucketEncryptionKey65BD56BF"
+          }
+        ],
+        "/CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucketEncryptionKeyAlias/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ascshopifypipelineArtifactsBucketEncryptionKeyAliasABFC8DE5"
+          }
+        ],
+        "/CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ascshopifypipelineArtifactsBucketA21E6ABC"
+          }
+        ],
+        "/CdkMsgAppBackendStack/asc-shopify-pipeline/ArtifactsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ascshopifypipelineArtifactsBucketPolicy5CAC7A7A"
+          }
+        ],
+        "/CdkMsgAppBackendStack/asc-shopify-pipeline/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ascshopifypipelineRole870C3F8B"
+          }
+        ],
+        "/CdkMsgAppBackendStack/asc-shopify-pipeline/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ascshopifypipelineRoleDefaultPolicy647BF127"
+          }
+        ],
+        "/CdkMsgAppBackendStack/asc-shopify-pipeline/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ascshopifypipeline84874331"
+          }
+        ],
+        "/CdkMsgAppBackendStack/asc-shopify-pipeline/source/github_source/WebhookResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ascshopifypipelinesourcegithubsourceWebhookResourceA645E472"
+          }
+        ],
+        "/CdkMsgAppBackendStack/asc-shopify-pipeline/build/CodeBuild/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ascshopifypipelinebuildCodeBuildCodePipelineActionRole12854882"
+          }
+        ],
+        "/CdkMsgAppBackendStack/asc-shopify-pipeline/build/CodeBuild/CodePipelineActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ascshopifypipelinebuildCodeBuildCodePipelineActionRoleDefaultPolicy08D79175"
+          }
+        ],
+        "/CdkMsgAppBackendStack/asc-shopify-pipeline/Deploy/ECS-Service/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ascshopifypipelineDeployECSServiceCodePipelineActionRoleA878AF01"
+          }
+        ],
+        "/CdkMsgAppBackendStack/asc-shopify-pipeline/Deploy/ECS-Service/CodePipelineActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ascshopifypipelineDeployECSServiceCodePipelineActionRoleDefaultPolicy8C0E3266"
+          }
+        ],
+        "/CdkMsgAppBackendStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/CdkMsgAppBackendStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/CdkMsgAppBackendStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/CdkMsgAppBackendStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "CdkMsgAppBackendStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
