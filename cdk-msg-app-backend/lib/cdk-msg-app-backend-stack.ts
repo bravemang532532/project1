@@ -126,17 +126,17 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
     });
 
 
-    const image = new assets.DockerImageAsset(this, 'CDKDockerImage', {
-      // directory: path.join(__dirname, 'msg-app-backend'),
-      directory: path.join(__dirname, '..', '..', 'msg-app-backend'),
-      networkMode: NetworkMode.HOST,
-    });
+    // const image = new assets.DockerImageAsset(this, 'CDKDockerImage', {
+    //   // directory: path.join(__dirname, 'msg-app-backend'),
+    //   directory: path.join(__dirname, '..', '..', 'msg-app-backend'),
+    //   networkMode: NetworkMode.HOST,
+    // });
 
 
-    new ecrdeploy.ECRDeployment(this, 'DeployDockerImage', {
-      src: new ecrdeploy.DockerImageName(image.imageUri),
-      dest: new ecrdeploy.DockerImageName(`${repository.repositoryUri}:latest`),
-    });
+    // new ecrdeploy.ECRDeployment(this, 'DeployDockerImage', {
+    //   src: new ecrdeploy.DockerImageName(image.imageUri),
+    //   dest: new ecrdeploy.DockerImageName(`${repository.repositoryUri}:latest`),
+    // });
 
 
 
@@ -170,7 +170,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
     const container = fargateTaskDefinition.addContainer("backend", {
       // Use an image from Amazon ECR
       image: ecs.ContainerImage.fromRegistry(repository.repositoryUri),
-      logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'workshop-api' }),
+      logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'msg-app-backend' }),
       environment: {
         'DYNAMODB_MESSAGES_TABLE': table.tableName,
         'APP_ID': 'my-app'
