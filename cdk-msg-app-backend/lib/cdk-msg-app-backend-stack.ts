@@ -247,15 +247,15 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
         buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_2,
         privileged: true
       },
-      environmentVariables: {
-        'cluster_name': {
-          value: `${cluster.clusterName}`
-        },
-        'ecr_repo_uri': {
-          value: `$${repository.repositoryUri}:latest`
-        }
-      },
-      badge: true,
+      // environmentVariables: {
+      //   'cluster_name': {
+      //     value: `${cluster.clusterName}`
+      //   },
+      //   'ecr_repo_uri': {
+      //     value: `$${repository.repositoryUri}:latest`
+      //   }
+      // },
+      // badge: true,
       // TODO - I had to hardcode tag here
       buildSpec: codebuild.BuildSpec.fromObject({
         version: "0.2",

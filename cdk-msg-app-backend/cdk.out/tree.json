@@ -2074,6 +2074,7 @@
                             "Fn::Join": [
                               "",
                               [
+                                "$",
                                 {
                                   "Fn::Select": [
                                     4,
@@ -2114,7 +2115,8 @@
                                 "/",
                                 {
                                   "Ref": "workshopapi2ADF1ECF"
-                                }
+                                },
+                                ":latest"
                               ]
                             ]
                           }
