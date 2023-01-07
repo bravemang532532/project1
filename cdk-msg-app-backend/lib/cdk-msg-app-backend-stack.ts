@@ -241,7 +241,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
         buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_2,
         privileged: true
       },
-      buildSpec: BuildSpec.fromSourceFilename('../msg-app-backend/buidspec.yml')
+      buildSpec: BuildSpec.fromSourceFilename('../../buidspec.yml')
       // environmentVariables: {
       //   'cluster_name': {
       //     value: `${cluster.clusterName}`
