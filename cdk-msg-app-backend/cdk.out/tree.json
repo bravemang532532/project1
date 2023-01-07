@@ -1177,7 +1177,7 @@
                             "awslogs-group": {
                               "Ref": "ApiTaskDefinitionbackendLogGroup20862E8E"
                             },
-                            "awslogs-stream-prefix": "msg-app-backend",
+                            "awslogs-stream-prefix": "workshop-api",
                             "awslogs-region": {
                               "Ref": "AWS::Region"
                             }
@@ -1801,17 +1801,17 @@
               "version": "2.56.0"
             }
           },
-          "myProject": {
-            "id": "myProject",
-            "path": "CdkMsgAppBackendStack/myProject",
+          "MyProject": {
+            "id": "MyProject",
+            "path": "CdkMsgAppBackendStack/MyProject",
             "children": {
               "Role": {
                 "id": "Role",
-                "path": "CdkMsgAppBackendStack/myProject/Role",
+                "path": "CdkMsgAppBackendStack/MyProject/Role",
                 "children": {
                   "ImportRole": {
                     "id": "ImportRole",
-                    "path": "CdkMsgAppBackendStack/myProject/Role/ImportRole",
+                    "path": "CdkMsgAppBackendStack/MyProject/Role/ImportRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
                       "version": "2.56.0"
@@ -1819,7 +1819,7 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "CdkMsgAppBackendStack/myProject/Role/Resource",
+                    "path": "CdkMsgAppBackendStack/MyProject/Role/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -1844,11 +1844,11 @@
                   },
                   "DefaultPolicy": {
                     "id": "DefaultPolicy",
-                    "path": "CdkMsgAppBackendStack/myProject/Role/DefaultPolicy",
+                    "path": "CdkMsgAppBackendStack/MyProject/Role/DefaultPolicy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "CdkMsgAppBackendStack/myProject/Role/DefaultPolicy/Resource",
+                        "path": "CdkMsgAppBackendStack/MyProject/Role/DefaultPolicy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                           "aws:cdk:cloudformation:props": {
@@ -1880,7 +1880,7 @@
                                           },
                                           ":log-group:/aws/codebuild/",
                                           {
-                                            "Ref": "myProjectCDE64E27"
+                                            "Ref": "MyProject39F7B0AE"
                                           },
                                           ":*"
                                         ]
@@ -1904,7 +1904,7 @@
                                           },
                                           ":log-group:/aws/codebuild/",
                                           {
-                                            "Ref": "myProjectCDE64E27"
+                                            "Ref": "MyProject39F7B0AE"
                                           }
                                         ]
                                       ]
@@ -1938,7 +1938,7 @@
                                         },
                                         ":report-group/",
                                         {
-                                          "Ref": "myProjectCDE64E27"
+                                          "Ref": "MyProject39F7B0AE"
                                         },
                                         "-*"
                                       ]
@@ -2019,10 +2019,10 @@
                               ],
                               "Version": "2012-10-17"
                             },
-                            "policyName": "myProjectRoleDefaultPolicy54F9CD34",
+                            "policyName": "MyProjectRoleDefaultPolicyB19B7C29",
                             "roles": [
                               {
-                                "Ref": "myProjectRoleA1839488"
+                                "Ref": "MyProjectRole9BBE5233"
                               }
                             ]
                           }
@@ -2046,7 +2046,7 @@
               },
               "Resource": {
                 "id": "Resource",
-                "path": "CdkMsgAppBackendStack/myProject/Resource",
+                "path": "CdkMsgAppBackendStack/MyProject/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::CodeBuild::Project",
                   "aws:cdk:cloudformation:props": {
@@ -2062,7 +2062,7 @@
                     },
                     "serviceRole": {
                       "Fn::GetAtt": [
-                        "myProjectRoleA1839488",
+                        "MyProjectRole9BBE5233",
                         "Arn"
                       ]
                     },
@@ -2514,7 +2514,7 @@
                             },
                             "configuration": {
                               "ProjectName": {
-                                "Ref": "myProjectCDE64E27"
+                                "Ref": "MyProject39F7B0AE"
                               }
                             },
                             "runOrder": 1,
@@ -2717,7 +2717,7 @@
                                           "Effect": "Allow",
                                           "Resource": {
                                             "Fn::GetAtt": [
-                                              "myProjectCDE64E27",
+                                              "MyProject39F7B0AE",
                                               "Arn"
                                             ]
                                           }

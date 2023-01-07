@@ -17,7 +17,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/73bd50c022131e03d4176a1ff2745964cf433a18ca1499618c35be0e6ecdb151.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/70dc54600dda3b7484af9efa7c76d40e76be333a3c48c8c1d48fba0559c75664.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -327,22 +327,22 @@
             "data": "ALBListenerTargetGroupD5D64FBA"
           }
         ],
-        "/CdkMsgAppBackendStack/myProject/Role/Resource": [
+        "/CdkMsgAppBackendStack/MyProject/Role/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "myProjectRoleA1839488"
+            "data": "MyProjectRole9BBE5233"
           }
         ],
-        "/CdkMsgAppBackendStack/myProject/Role/DefaultPolicy/Resource": [
+        "/CdkMsgAppBackendStack/MyProject/Role/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "myProjectRoleDefaultPolicy54F9CD34"
+            "data": "MyProjectRoleDefaultPolicyB19B7C29"
           }
         ],
-        "/CdkMsgAppBackendStack/myProject/Resource": [
+        "/CdkMsgAppBackendStack/MyProject/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "myProjectCDE64E27"
+            "data": "MyProject39F7B0AE"
           }
         ],
         "/CdkMsgAppBackendStack/ecs-pipeline/ArtifactsBucketEncryptionKey/Resource": [

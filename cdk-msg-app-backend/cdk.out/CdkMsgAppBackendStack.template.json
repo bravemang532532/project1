@@ -811,7 +811,7 @@
         "awslogs-group": {
          "Ref": "ApiTaskDefinitionbackendLogGroup20862E8E"
         },
-        "awslogs-stream-prefix": "msg-app-backend",
+        "awslogs-stream-prefix": "workshop-api",
         "awslogs-region": {
          "Ref": "AWS::Region"
         }
@@ -1222,7 +1222,7 @@
     "aws:cdk:path": "CdkMsgAppBackendStack/ALB/Listener/TargetGroup/Resource"
    }
   },
-  "myProjectRoleA1839488": {
+  "MyProjectRole9BBE5233": {
    "Type": "AWS::IAM::Role",
    "Properties": {
     "AssumeRolePolicyDocument": {
@@ -1239,10 +1239,10 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "CdkMsgAppBackendStack/myProject/Role/Resource"
+    "aws:cdk:path": "CdkMsgAppBackendStack/MyProject/Role/Resource"
    }
   },
-  "myProjectRoleDefaultPolicy54F9CD34": {
+  "MyProjectRoleDefaultPolicyB19B7C29": {
    "Type": "AWS::IAM::Policy",
    "Properties": {
     "PolicyDocument": {
@@ -1273,7 +1273,7 @@
            },
            ":log-group:/aws/codebuild/",
            {
-            "Ref": "myProjectCDE64E27"
+            "Ref": "MyProject39F7B0AE"
            },
            ":*"
           ]
@@ -1297,7 +1297,7 @@
            },
            ":log-group:/aws/codebuild/",
            {
-            "Ref": "myProjectCDE64E27"
+            "Ref": "MyProject39F7B0AE"
            }
           ]
          ]
@@ -1331,7 +1331,7 @@
           },
           ":report-group/",
           {
-           "Ref": "myProjectCDE64E27"
+           "Ref": "MyProject39F7B0AE"
           },
           "-*"
          ]
@@ -1412,18 +1412,18 @@
      ],
      "Version": "2012-10-17"
     },
-    "PolicyName": "myProjectRoleDefaultPolicy54F9CD34",
+    "PolicyName": "MyProjectRoleDefaultPolicyB19B7C29",
     "Roles": [
      {
-      "Ref": "myProjectRoleA1839488"
+      "Ref": "MyProjectRole9BBE5233"
      }
     ]
    },
    "Metadata": {
-    "aws:cdk:path": "CdkMsgAppBackendStack/myProject/Role/DefaultPolicy/Resource"
+    "aws:cdk:path": "CdkMsgAppBackendStack/MyProject/Role/DefaultPolicy/Resource"
    }
   },
-  "myProjectCDE64E27": {
+  "MyProject39F7B0AE": {
    "Type": "AWS::CodeBuild::Project",
    "Properties": {
     "Artifacts": {
@@ -1438,7 +1438,7 @@
     },
     "ServiceRole": {
      "Fn::GetAtt": [
-      "myProjectRoleA1839488",
+      "MyProjectRole9BBE5233",
       "Arn"
      ]
     },
@@ -1474,7 +1474,7 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "CdkMsgAppBackendStack/myProject/Resource"
+    "aws:cdk:path": "CdkMsgAppBackendStack/MyProject/Resource"
    }
   },
   "ecspipelineArtifactsBucketEncryptionKeyAAB73B69": {
@@ -1771,7 +1771,7 @@
         },
         "Configuration": {
          "ProjectName": {
-          "Ref": "myProjectCDE64E27"
+          "Ref": "MyProject39F7B0AE"
          }
         },
         "InputArtifacts": [
@@ -1931,7 +1931,7 @@
        "Effect": "Allow",
        "Resource": {
         "Fn::GetAtt": [
-         "myProjectCDE64E27",
+         "MyProject39F7B0AE",
          "Arn"
         ]
        }
