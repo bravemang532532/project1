@@ -1177,7 +1177,7 @@
                             "awslogs-group": {
                               "Ref": "ApiTaskDefinitionbackendLogGroup20862E8E"
                             },
-                            "awslogs-stream-prefix": "workshop-api",
+                            "awslogs-stream-prefix": "msg-app-backend",
                             "awslogs-region": {
                               "Ref": "AWS::Region"
                             }
