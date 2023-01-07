@@ -1431,69 +1431,6 @@
     },
     "Environment": {
      "ComputeType": "BUILD_GENERAL1_SMALL",
-     "EnvironmentVariables": [
-      {
-       "Name": "cluster_name",
-       "Type": "PLAINTEXT",
-       "Value": {
-        "Ref": "MyCluster4C1BA579"
-       }
-      },
-      {
-       "Name": "ecr_repo_uri",
-       "Type": "PLAINTEXT",
-       "Value": {
-        "Fn::Join": [
-         "",
-         [
-          "$",
-          {
-           "Fn::Select": [
-            4,
-            {
-             "Fn::Split": [
-              ":",
-              {
-               "Fn::GetAtt": [
-                "workshopapi2ADF1ECF",
-                "Arn"
-               ]
-              }
-             ]
-            }
-           ]
-          },
-          ".dkr.ecr.",
-          {
-           "Fn::Select": [
-            3,
-            {
-             "Fn::Split": [
-              ":",
-              {
-               "Fn::GetAtt": [
-                "workshopapi2ADF1ECF",
-                "Arn"
-               ]
-              }
-             ]
-            }
-           ]
-          },
-          ".",
-          {
-           "Ref": "AWS::URLSuffix"
-          },
-          "/",
-          {
-           "Ref": "workshopapi2ADF1ECF"
-          },
-          ":latest"
-         ]
-        ]
-       }
-      }
-     ],
      "Image": "aws/codebuild/amazonlinux2-x86_64-standard:2.0",
      "ImagePullCredentialsType": "CODEBUILD",
      "PrivilegedMode": true,
@@ -1511,7 +1448,6 @@
      "ReportBuildStatus": true,
      "Type": "GITHUB"
     },
-    "BadgeEnabled": true,
     "Cache": {
      "Type": "NO_CACHE"
     },

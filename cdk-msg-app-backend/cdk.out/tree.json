@@ -2058,70 +2058,7 @@
                       "image": "aws/codebuild/amazonlinux2-x86_64-standard:2.0",
                       "imagePullCredentialsType": "CODEBUILD",
                       "privilegedMode": true,
-                      "computeType": "BUILD_GENERAL1_SMALL",
-                      "environmentVariables": [
-                        {
-                          "name": "cluster_name",
-                          "type": "PLAINTEXT",
-                          "value": {
-                            "Ref": "MyCluster4C1BA579"
-                          }
-                        },
-                        {
-                          "name": "ecr_repo_uri",
-                          "type": "PLAINTEXT",
-                          "value": {
-                            "Fn::Join": [
-                              "",
-                              [
-                                "$",
-                                {
-                                  "Fn::Select": [
-                                    4,
-                                    {
-                                      "Fn::Split": [
-                                        ":",
-                                        {
-                                          "Fn::GetAtt": [
-                                            "workshopapi2ADF1ECF",
-                                            "Arn"
-                                          ]
-                                        }
-                                      ]
-                                    }
-                                  ]
-                                },
-                                ".dkr.ecr.",
-                                {
-                                  "Fn::Select": [
-                                    3,
-                                    {
-                                      "Fn::Split": [
-                                        ":",
-                                        {
-                                          "Fn::GetAtt": [
-                                            "workshopapi2ADF1ECF",
-                                            "Arn"
-                                          ]
-                                        }
-                                      ]
-                                    }
-                                  ]
-                                },
-                                ".",
-                                {
-                                  "Ref": "AWS::URLSuffix"
-                                },
-                                "/",
-                                {
-                                  "Ref": "workshopapi2ADF1ECF"
-                                },
-                                ":latest"
-                              ]
-                            ]
-                          }
-                        }
-                      ]
+                      "computeType": "BUILD_GENERAL1_SMALL"
                     },
                     "serviceRole": {
                       "Fn::GetAtt": [
@@ -2135,7 +2072,6 @@
                       "location": "https://github.com/bravemang532532/project1.git",
                       "buildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"pre_build\": {\n      \"commands\": [\n        \"env\",\n        \"export tag=latest\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"cd msg-app-backend\",\n        \"docker build -t $ecr_repo_uri:$tag .\",\n        \"$(aws ecr get-login --no-include-email)\",\n        \"docker push $ecr_repo_uri:$tag\"\n      ]\n    },\n    \"post_build\": {\n      \"commands\": [\n        \"echo \\\"in post-build stage\\\"\",\n        \"cd ..\",\n        \"printf '[{\\\"name\\\":\\\"msg-app-backend\\\",\\\"imageUri\\\":\\\"%s\\\"}]' $ecr_repo_uri:$tag > imagedefinitions.json\",\n        \"pwd; ls -al; cat imagedefinitions.json\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"imagedefinitions.json\"\n    ]\n  }\n}"
                     },
-                    "badgeEnabled": true,
                     "cache": {
                       "type": "NO_CACHE"
                     },

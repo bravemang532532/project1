@@ -232,14 +232,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
 
 
 
-    // const project = new codebuild.PipelineProject(this, 'MyProject', {
-    //   projectName: `${this.stackName}`,
-    //   source: gitHubSource,
-    //   environment: {
-    //     buildImage: codebuild.LinuxBuildImage.STANDARD_2_0,
-    //     privileged: true
-    //   },
-    // });
+
     const project = new codebuild.Project(this, 'myProject', {
       projectName: `${this.stackName}`,
       source: gitHubSource,
@@ -257,44 +250,44 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
       // },
       // badge: true,
       // TODO - I had to hardcode tag here
-      buildSpec: codebuild.BuildSpec.fromObject({
-        version: "0.2",
-        phases: {
-          pre_build: {
-            /*
-            commands: [
-              'env',
-              'export tag=${CODEBUILD_RESOLVED_SOURCE_VERSION}'
-            ]
-            */
-            commands: [
-              'env',
-              'export tag=latest'
-            ]
-          },
-          build: {
-            commands: [
-              'cd msg-app-backend',
-              `docker build -t $ecr_repo_uri:$tag .`,
-              '$(aws ecr get-login --no-include-email)',
-              'docker push $ecr_repo_uri:$tag'
-            ]
-          },
-          post_build: {
-            commands: [
-              'echo "in post-build stage"',
-              'cd ..',
-              "printf '[{\"name\":\"msg-app-backend\",\"imageUri\":\"%s\"}]' $ecr_repo_uri:$tag > imagedefinitions.json",
-              "pwd; ls -al; cat imagedefinitions.json"
-            ]
-          }
-        },
-        artifacts: {
-          files: [
-            'imagedefinitions.json'
-          ]
-        }
-      })
+      // buildSpec: codebuild.BuildSpec.fromObject({
+      //   version: "0.2",
+      //   phases: {
+      //     pre_build: {
+      //       /*
+      //       commands: [
+      //         'env',
+      //         'export tag=${CODEBUILD_RESOLVED_SOURCE_VERSION}'
+      //       ]
+      //       */
+      //       commands: [
+      //         'env',
+      //         'export tag=latest'
+      //       ]
+      //     },
+      //     build: {
+      //       commands: [
+      //         'cd msg-app-backend',
+      //         `docker build -t $ecr_repo_uri:$tag .`,
+      //         '$(aws ecr get-login --no-include-email)',
+      //         'docker push $ecr_repo_uri:$tag'
+      //       ]
+      //     },
+      //     post_build: {
+      //       commands: [
+      //         'echo "in post-build stage"',
+      //         'cd ..',
+      //         "printf '[{\"name\":\"msg-app-backend\",\"imageUri\":\"%s\"}]' $ecr_repo_uri:$tag > imagedefinitions.json",
+      //         "pwd; ls -al; cat imagedefinitions.json"
+      //       ]
+      //     }
+      //   },
+      //   artifacts: {
+      //     files: [
+      //       'imagedefinitions.json'
+      //     ]
+      //   }
+      // })
     });
 
 
