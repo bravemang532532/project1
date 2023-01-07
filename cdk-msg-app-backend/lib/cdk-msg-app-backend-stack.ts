@@ -170,7 +170,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
     const container = fargateTaskDefinition.addContainer("backend", {
       // Use an image from Amazon ECR
       image: ecs.ContainerImage.fromRegistry(repository.repositoryUri),
-      logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'msg-app-backend' }),
+      logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'workshop-api' }),
       environment: {
         'DYNAMODB_MESSAGES_TABLE': table.tableName,
         'APP_ID': 'my-app'
@@ -233,7 +233,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
 
 
 
-    const project = new codebuild.Project(this, 'myProject', {
+    const project = new codebuild.Project(this, 'MyProject', {
       projectName: `${this.stackName}`,
       source: gitHubSource,
       environment: {

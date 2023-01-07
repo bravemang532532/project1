@@ -1443,7 +1443,6 @@
      ]
     },
     "Source": {
-     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"pre_build\": {\n      \"commands\": [\n        \"env\",\n        \"export tag=latest\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"cd msg-app-backend\",\n        \"docker build -t $ecr_repo_uri:$tag .\",\n        \"$(aws ecr get-login --no-include-email)\",\n        \"docker push $ecr_repo_uri:$tag\"\n      ]\n    },\n    \"post_build\": {\n      \"commands\": [\n        \"echo \\\"in post-build stage\\\"\",\n        \"cd ..\",\n        \"printf '[{\\\"name\\\":\\\"msg-app-backend\\\",\\\"imageUri\\\":\\\"%s\\\"}]' $ecr_repo_uri:$tag > imagedefinitions.json\",\n        \"pwd; ls -al; cat imagedefinitions.json\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"files\": [\n      \"imagedefinitions.json\"\n    ]\n  }\n}",
      "Location": "https://github.com/bravemang532532/project1.git",
      "ReportBuildStatus": true,
      "Type": "GITHUB"
