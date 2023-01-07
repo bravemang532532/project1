@@ -37,6 +37,7 @@ import * as codecommit from 'aws-cdk-lib/aws-codecommit';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
 import * as codepipeline_actions from 'aws-cdk-lib/aws-codepipeline-actions';
+import { BuildSpec } from 'aws-cdk-lib/aws-codebuild';
 
 
 
@@ -240,6 +241,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
         buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_2,
         privileged: true
       },
+      buildSpec: BuildSpec.fromSourceFilename('msg-app-backend/buidspec.yml')
       // environmentVariables: {
       //   'cluster_name': {
       //     value: `${cluster.clusterName}`
