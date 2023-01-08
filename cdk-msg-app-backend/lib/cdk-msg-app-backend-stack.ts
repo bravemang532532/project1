@@ -128,8 +128,8 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
 
 
     const image = new assets.DockerImageAsset(this, 'CDKDockerImage', {
-      // directory: path.join(__dirname, 'msg-app-backend'),
-      directory: path.join(__dirname, '..', 'msg-app-backend'),
+      directory: path.join(__dirname, 'msg-app-backend'),
+      // directory: path.join(__dirname, '..', 'msg-app-backend'),
       networkMode: NetworkMode.HOST,
     });
 
@@ -282,7 +282,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
             "commands": [
               "echo Build started on `date`",
               "echo Building the Docker image...",
-              "docker build -t $REPOSITORY_URI:latest .",
+              "docker build -t $REPOSITORY_URI/:latest .",
               "docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG"
             ]
           },
