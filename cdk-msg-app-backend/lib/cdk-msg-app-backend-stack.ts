@@ -269,7 +269,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
 
           pre_build: {
             "commands": [
-              "rm - rf  package-lock.json",
+              // "rm - rf  package-lock.json",
               "npm install",
               "$(aws ecr get-login --no-include-email --region ap-south-1)",
               "REPOSITORY_URI=045654199099.dkr.ecr.ap-south-1.amazonaws.com/workshop-api",
