@@ -302,8 +302,10 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
 
         "artifacts": {
           "files": [
-            'imagedefinitions.json'
-          ]
+            "**/*"
+          ],
+          "base-directory": "msg-app-backend*",
+          "discard-paths": "yes"
         }
       })
 
