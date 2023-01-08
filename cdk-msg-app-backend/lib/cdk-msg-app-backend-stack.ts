@@ -128,8 +128,8 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
 
 
     const image = new assets.DockerImageAsset(this, 'CDKDockerImage', {
-      directory: path.join(__dirname, 'msg-app-backend'),
-      // directory: path.join(__dirname, '..', 'msg-app-backend'),
+      // directory: path.join(__dirname, 'msg-app-backend'),
+      directory: path.join(__dirname, '..', '..', 'msg-app-backend'),
       networkMode: NetworkMode.HOST,
     });
 
@@ -270,7 +270,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
           pre_build: {
             "commands": [
               "npm install",
-              "cd msg-app-backend",
+
               "$(aws ecr get-login --no-include-email --region ap-south-1)",
               "REPOSITORY_URI=045654199099.dkr.ecr.ap-south-1.amazonaws.com/workshop-api",
               "CONTAINER_NAME=backend",
@@ -283,6 +283,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
             "commands": [
               "echo Build started on `date`",
               "echo Building the Docker image...",
+              // "cd msg-app-backend",
               "docker build -t $REPOSITORY_URI/:latest .",
               "docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG"
             ]
