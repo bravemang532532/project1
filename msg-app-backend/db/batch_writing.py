@@ -12,7 +12,7 @@ with table.batch_writer() as batch:
     message1 = {
             'app_id': 'my-app',
             'created_at': int(time.time()),
-            'message': 'Lo ultimo que se pierde es la barriga, señor Esperanza.------------',
+            'message': 'Lo ultimo que se pierde es la barriga, señor Esperanza.------------Pramod Anna----------------',
             'active': True,
         }
     batch.put_item(Item=message1)
@@ -20,7 +20,7 @@ with table.batch_writer() as batch:
     message2 = {
             'app_id': 'my-app',
             'created_at': int(time.time()+1),
-            'message': 'Es que no me tienen paciencia.############################################',
+            'message': 'Es que no me tienen paciencia.#########Naveen###########################,
             'active': True,
         }
     batch.put_item(Item=message2)
