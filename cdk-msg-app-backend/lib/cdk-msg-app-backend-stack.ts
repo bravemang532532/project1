@@ -241,7 +241,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
         buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_2,
         privileged: true
       },
-      buildSpec: BuildSpec.fromSourceFilename('../../buidspec.yml')
+      // buildSpec: BuildSpec.fromSourceFilename('../../buidspec.yml')
       // environmentVariables: {
       //   'cluster_name': {
       //     value: `${cluster.clusterName}`
@@ -252,44 +252,63 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
       // },
       // badge: true,
       // TODO - I had to hardcode tag here
-      // buildSpec: codebuild.BuildSpec.fromObject({
-      //   version: "0.2",
-      //   phases: {
-      //     pre_build: {
-      //       /*
-      //       commands: [
-      //         'env',
-      //         'export tag=${CODEBUILD_RESOLVED_SOURCE_VERSION}'
-      //       ]
-      //       */
-      //       commands: [
-      //         'env',
-      //         'export tag=latest'
-      //       ]
-      //     },
-      //     build: {
-      //       commands: [
-      //         'cd msg-app-backend',
-      //         `docker build -t $ecr_repo_uri:$tag .`,
-      //         '$(aws ecr get-login --no-include-email)',
-      //         'docker push $ecr_repo_uri:$tag'
-      //       ]
-      //     },
-      //     post_build: {
-      //       commands: [
-      //         'echo "in post-build stage"',
-      //         'cd ..',
-      //         "printf '[{\"name\":\"msg-app-backend\",\"imageUri\":\"%s\"}]' $ecr_repo_uri:$tag > imagedefinitions.json",
-      //         "pwd; ls -al; cat imagedefinitions.json"
-      //       ]
-      //     }
-      //   },
-      //   artifacts: {
-      //     files: [
-      //       'imagedefinitions.json'
-      //     ]
-      //   }
-      // })
+      buildSpec: codebuild.BuildSpec.fromObject({
+        version: "0.2",
+        phases: {
+          install: {
+            "runtime- versions": {
+              "docker": 18
+            },
+            "commands": [
+              "docker --version",
+              "pip install --upgrade awscli",
+              "aws --version",
+              "node --version"
+            ]
+          },
+
+          pre_build: {
+            "commands": [
+              "npm install",
+              "$(aws ecr get-login --no-include-email --region ap-south-1)",
+              "REPOSITORY_URI=045654199099.dkr.ecr.ap-south-1.amazonaws.com/workshop-api",
+              "CONTAINER_NAME=backend",
+              "COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)",
+              "IMAGE_TAG=${COMMIT_HASH:=latest}"
+            ]
+          },
+
+          "build": {
+            "commands": [
+              "echo Build started on `date`",
+              "echo Building the Docker image...",
+              "docker build -t $REPOSITORY_URI:latest .",
+              "docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG"
+            ]
+          },
+
+          "post_build": {
+            "commands": [
+              "docker push $REPOSITORY_URI:latest",
+              "docker push $REPOSITORY_URI:$IMAGE_TAG",
+              "echo Write the image definitions file for ECS",
+              "printf '[{\"name\":\"%s\",\"imageUri\":\"%s\"}]' $CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json"
+            ]
+          }
+        },
+
+        artifacts: {
+          files: [
+            'imagedefinitions.json'
+          ]
+        }
+      })
+
+
+
+
+
+
     });
 
 
