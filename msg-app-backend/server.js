@@ -19,7 +19,7 @@ app.get('/api/messages/:token?', (req, res) => {
   var ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
 
   var params = {
-    // Limit:3,
+    Limit: 3,
     ScanIndexForward: false,
     ExpressionAttributeValues: {
       ":app_id": { S: APP_ID },
