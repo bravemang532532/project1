@@ -295,14 +295,14 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
               "docker push $REPOSITORY_URI:latest",
               "docker push $REPOSITORY_URI:$IMAGE_TAG",
               "echo Write the image definitions file for ECS",
-              // "printf '[{\"name\":\"%s\",\"imageUri\":\"%s\"}]' $CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json"
+              "printf '[{\"name\":\"%s\",\"imageUri\":\"%s\"}]' $CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json"
             ]
           }
         },
 
-        artifacts: {
-          files: [
-            // 'imagedefinitions.json'
+        "artifacts": {
+          "files": [
+            'imagedefinitions.json'
           ]
         }
       })
