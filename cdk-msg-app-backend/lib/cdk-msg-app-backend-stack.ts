@@ -269,6 +269,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
 
           pre_build: {
             "commands": [
+              "rm - rf  package-lock.json",
               "npm install",
               "$(aws ecr get-login --no-include-email --region ap-south-1)",
               "REPOSITORY_URI=045654199099.dkr.ecr.ap-south-1.amazonaws.com/workshop-api",
@@ -294,14 +295,14 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
               "docker push $REPOSITORY_URI:latest",
               "docker push $REPOSITORY_URI:$IMAGE_TAG",
               "echo Write the image definitions file for ECS",
-              "printf '[{\"name\":\"%s\",\"imageUri\":\"%s\"}]' $CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json"
+              // "printf '[{\"name\":\"%s\",\"imageUri\":\"%s\"}]' $CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json"
             ]
           }
         },
 
         artifacts: {
           files: [
-            'imagedefinitions.json'
+            // 'imagedefinitions.json'
           ]
         }
       })
