@@ -252,57 +252,59 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
       // },
       // badge: true,
       // TODO - I had to hardcode tag here
-      // buildSpec: codebuild.BuildSpec.fromObject({
-      //   version: "0.2",
-      //   phases: {
-      //     install: {
-      //       "runtime- versions": {
-      //         "docker": 18
-      //       },
-      //       "commands": [
-      //         "docker --version",
-      //         "pip install --upgrade awscli",
-      //         "aws --version",
-      //         "node --version"
-      //       ]
-      //     },
+      buildSpec: codebuild.BuildSpec.fromObject({
+        version: "0.2",
+        phases: {
+          install: {
+            "runtime- versions": {
+              "docker": 18
+            },
+            "commands": [
+              "docker --version",
+              "pip install --upgrade awscli",
+              "aws --version",
+              "node --version"
+            ]
+          },
 
-      //     pre_build: {
-      //       "commands": [
-      //         "npm install",
-      //         "$(aws ecr get-login --no-include-email --region ap-south-1)",
-      //         "REPOSITORY_URI=045654199099.dkr.ecr.ap-south-1.amazonaws.com/workshop-api",
-      //         "CONTAINER_NAME=backend",
-      //         "COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)",
-      //         "IMAGE_TAG=${COMMIT_HASH:=latest}"
-      //       ]
-      //     },
+          pre_build: {
+            "commands": [
+              "npm install",
+              "$(aws ecr get-login --no-include-email --region ap-south-1)",
+              "REPOSITORY_URI=045654199099.dkr.ecr.ap-south-1.amazonaws.com/workshop-api",
+              "CONTAINER_NAME=backend",
+              "COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)",
+              "IMAGE_TAG=${COMMIT_HASH:=latest}"
+            ]
+          },
 
-      //     "build": {
-      //       "commands": [
-      //         "echo Build started on `date`",
-      //         "echo Building the Docker image...",
-      //         "docker build -t $REPOSITORY_URI/:latest .",
-      //         "docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG"
-      //       ]
-      //     },
+          "build": {
+            "commands": [
+              "echo Build started on `date`",
+              "echo Building the Docker image...",
+              "cd msg-app-backend",
+              // "docker build -t $REPOSITORY_URI/:latest ."
+              "docker build -t workshop-api .",
+              "docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG"
+            ]
+          },
 
-      //     "post_build": {
-      //       "commands": [
-      //         "docker push $REPOSITORY_URI:latest",
-      //         "docker push $REPOSITORY_URI:$IMAGE_TAG",
-      //         "echo Write the image definitions file for ECS",
-      //         "printf '[{\"name\":\"%s\",\"imageUri\":\"%s\"}]' $CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json"
-      //       ]
-      //     }
-      //   },
+          "post_build": {
+            "commands": [
+              "docker push $REPOSITORY_URI:latest",
+              "docker push $REPOSITORY_URI:$IMAGE_TAG",
+              "echo Write the image definitions file for ECS",
+              "printf '[{\"name\":\"%s\",\"imageUri\":\"%s\"}]' $CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json"
+            ]
+          }
+        },
 
-      //   artifacts: {
-      //     files: [
-      //       'imagedefinitions.json'
-      //     ]
-      //   }
-      // })
+        artifacts: {
+          files: [
+            'imagedefinitions.json'
+          ]
+        }
+      })
 
 
 
