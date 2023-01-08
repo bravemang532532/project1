@@ -129,15 +129,15 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
 
     const image = new assets.DockerImageAsset(this, 'CDKDockerImage', {
       // directory: path.join(__dirname, 'msg-app-backend'),
-      directory: path.join(__dirname, '..', '..', 'msg-app-backend'),
+      directory: path.join(__dirname, '..', 'msg-app-backend'),
       networkMode: NetworkMode.HOST,
     });
 
 
-    // new ecrdeploy.ECRDeployment(this, 'DeployDockerImage', {
-    //   src: new ecrdeploy.DockerImageName(image.imageUri),
-    //   dest: new ecrdeploy.DockerImageName(`${repository.repositoryUri}:latest`),
-    // });
+    new ecrdeploy.ECRDeployment(this, 'DeployDockerImage', {
+      src: new ecrdeploy.DockerImageName(image.imageUri),
+      dest: new ecrdeploy.DockerImageName(`${repository.repositoryUri}:latest`),
+    });
 
 
 
@@ -167,12 +167,10 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
       actions: ['dynamodb:*']
     }));
 
-    const baseImage = 'public.ecraws/bitnami/node:latest'
+
     const container = fargateTaskDefinition.addContainer("backend", {
       // Use an image from Amazon ECR
-      // image: ecs.ContainerImage.fromRegistry(repository.repositoryUri),
-      image: ecs.ContainerImage.fromRegistry(baseImage),
-
+      image: ecs.ContainerImage.fromRegistry(repository.repositoryUri),
       logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'workshop-api' }),
       environment: {
         'DYNAMODB_MESSAGES_TABLE': table.tableName,
