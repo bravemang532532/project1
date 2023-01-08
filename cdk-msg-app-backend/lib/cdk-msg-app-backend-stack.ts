@@ -270,6 +270,7 @@ export class CdkMsgAppBackendStack extends cdk.Stack {
           pre_build: {
             "commands": [
               "npm install",
+              "cd msg-app-backend",
               "$(aws ecr get-login --no-include-email --region ap-south-1)",
               "REPOSITORY_URI=045654199099.dkr.ecr.ap-south-1.amazonaws.com/workshop-api",
               "CONTAINER_NAME=backend",
